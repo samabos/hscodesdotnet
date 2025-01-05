@@ -1,0 +1,129 @@
+﻿@page
+@model Autumn.UI.Pages.NoteS2Model
+@{
+    Layout = "_LayoutSemanticUIFrontend";
+}
+
+
+@if (Model.HSCode.Any())
+{
+    <h4 class="ui header dividing">1. Explanatory Note</h4>
+    @foreach (var h in Model.HSCode)
+    {
+        <table class="table ui small" style="font-size:small;">
+            <tr>
+                <td>@h.SelfExplanatory</td>
+            </tr>
+        </table>
+    }
+
+    <h4 class="ui header dividing">2. Customs Tariff</h4>
+    <table class="ui very basic unstackable  celled table small" style="font-size:small;">
+        <thead>
+            <tr>
+                <th>Tariff Code</th>
+                <th>DUTY</th>
+                <th>VAT</th>
+                <th>LEVY</th>
+                <th>SUR</th>
+                <th>ELTS</th>
+                <th>NAC</th>
+                <th>CISS</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Tariff.Count > 0)
+            {
+                foreach (var t in Model.Tariff)
+                {
+                    <tr class="table-info">
+                        <th title="@t.Description">@t.HSCode</th>
+                        <td>@t.DUTY %</td>
+                        <td>@t.VAT %</td>
+                        <td>@t.LEVY %</td>
+                        <td>@t.ETLS %</td>
+                        <td>@t.SUR %</td>
+                        <td>@t.NAC %</td>
+                        <td>@t.CISS %</td>
+                        <td>
+                            <button onclick="SendHSCode(this)" class="ui button tiny" type="button" data-hscode="@t.HSCode">Use HS Code</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <h4 class="ui header dividing">3. Import Regulatory Requirement</h4>
+
+    @if (Model.Requirements.Any())
+    {
+        <table class="ui very basic unstackable  celled table small" style="font-size:small;">
+            <thead>
+                @* <tr><th class="grey">@h.HSCodeLocal - @h.Description</th></tr>*@
+                <tr>
+                    <th>Issuer</th>
+                    <th>National HSCode</th>
+                    <th>Import Guidelines</th>
+                    <th>Application Form</th>
+                    <th>Documents Delivered</th>
+                    <th>Estimated Time</th>
+                    <th>Form Cost(NGN)</th>
+                    <th>Product Cost(NGN)</th>
+                    @* <th>Duration For Issue</th>
+        <td>Application Fee </td>
+              <td>Permit Fee</td>
+              <td>Renewal Fee</td>
+              <td>Inspection Fee</td>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var h in Model.Requirements)
+                {
+
+                <tr>
+                    <td>@h.Agency</td>
+                    <td>@h.HSCodeLocal - @h.Description</td>
+                    <td>@h.ImportGuidelines</td>
+                    <td>@h.Forms</td>
+                    <td>@h.DocumentsDelivered</td>
+                    <td>@h.EstimatedTime</td>
+                    <td>@h.FormCost</td>
+                    <td>@h.ProductCost</td>
+                </tr>
+
+
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table class="ui very basic unstackable  celled table small" style="font-size:small;">
+            <thead>
+                <tr>
+                    <td>Not Available.</td>
+                </tr>
+            </thead>
+        </table>
+    }
+
+    @*<b>4. Export Regulatory Requirement</b>
+        <table class="table table-light" style="font-size:small;">
+            <tr>
+                <td>Not Available.</td>
+            </tr>
+        </table>*@
+}
+else
+{
+    <h4 class="ui header dividing">Information!</h4>
+    <table class="ui very basic unstackable celled table small" style="font-size:small;">
+        <thead>
+            <tr>
+                <td>Not Available.</td>
+            </tr>
+        </thead>
+    </table>
+}

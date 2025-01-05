@@ -1,0 +1,75 @@
+﻿@page 
+@model Autumn.UI.Pages.Admin.Products.IndexModel
+@{
+    ViewData["Title"] = "Keywords";
+}
+
+<h1 class="ui justify aligned header">Keywords Manager</h1>
+<a asp-page="./Create" class="ui button medium"> Add New</a>
+<div class="ui segment">
+    <table id="datatable" class="ui single line table" style="width:100%">
+        <thead class="">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.ProductList[0].Id)</th>
+                <th>@Html.DisplayNameFor(model => model.ProductList[0].Keyword)</th>
+                <th>@Html.DisplayNameFor(model => model.ProductList[0].Class)</th>
+                <th>@Html.DisplayNameFor(model => model.ProductList[0].Code)</th>
+                <th>@Html.DisplayNameFor(model => model.ProductList[0].CreatedBy)</th>
+                <th>@Html.DisplayNameFor(model => model.ProductList[0].Created)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@if (Model.ProductList.Count > 0)
+                {
+                    var i = 0;
+                    foreach (var item in Model.ProductList)
+                    {
+                        i++;
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.Keyword</td>
+                            <td>@item.Class</td>
+                            <td>@item.Code</td>
+                            <td>@item.Tags</td>
+                            <td></td>
+                        </tr>
+                    }
+                }*@
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        $('#datatable').DataTable({
+            "scrollX": true,
+            "proccessing": true,
+            "serverSide": true,
+            "ajax": {
+                url: "/admin/products",
+                type: 'POST',
+                headers: { 'RequestVerificationToken': $('@Html.AntiForgeryToken()').val() }
+            },
+            "columnDefs": [
+                {
+                    "targets": -1,
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                        return '<a href="/admin/products/edit/' + row.id + '">Edit</a>| <a href="/admin/products/details/' + row.id + '">Details</a> | <a href="/admin/products/delete/' + row.id + '">Delete</a>';
+                    },
+                    "sortable": false
+                },
+                { "name": "Id", "data": "id", "targets": 0, "visible": false },
+                { "name": "Keyword", "data": "keyword", "targets": 1 },
+                { "name": "Class", "data": "class", "targets": 2 },
+                { "name": "Code", "data": "code", "targets": 3 },
+                { "name": "CreatedBy", "data": "createdBy", "targets": 4 },
+                { "name": "Created", "data": "created", "targets": 5 }
+            ],
+            "order": [[0, "asc"]]
+        });
+    });
+    </script>
+}

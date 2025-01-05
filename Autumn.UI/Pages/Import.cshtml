@@ -1,0 +1,301 @@
+﻿@page
+@model Autumn.UI.Pages.ImportModel
+
+@{
+    ViewData["Title"] = "Import Commodity Classification";
+    Layout = "_LayoutSemanticUIFrontend";
+
+    var tags = new List<string>();
+    var m = Model.IModel.ToList();
+    if (m.Count > 0) {
+        foreach (var item in m) {
+            if (item.Tags != null && item.Tags.Count > 0) {
+                tags.AddRange(item.Tags);
+            }
+        }
+    }
+}
+
+
+
+<div class="ui success message" style="margin-top:1em;">
+    <i class="close icon"></i>
+    <div class="header">
+        Commodity Codes and Tariffs Classification
+
+    </div>
+    <p>Classify commodity to get imformation about duty, levy and VAT. Also find out about regulatory requirements for import and export </p>
+
+</div>
+
+@* Search Control Box Starts *@
+
+
+<h2 class="ui center aligned header" style="margin-top:1em;">Search for Commodity Codes</h2>
+<form asp-action="Import" method="post" class="">
+    <div class="ui action input" style="width:100%;">
+        <input asp-for="ProductDesc" type="text" class=" keyword big" placeholder="i.e television" aria-describedby="button-addon2">
+
+        <button type="submit" class="ui button positive">Search</button>
+    </div>
+
+    @*
+            <input asp-for="ProductDesc" type="hidden" />
+            <div class="ui center aligned search" style="margin-bottom:2em;">
+                <div class="ui icon input fluid">
+                    <input type="text" class="prompt" placeholder="i.e television" value="@Model.ProductDesc" />
+
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        <button class="ui button rounded" type="submit" id="">Search</button>
+    *@
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+
+
+    @* Search Control Box Ends *@
+
+
+
+
+    @* Check if Multiple Products *@
+    @if (Model.IModel.Count >= 1 && tags.Count > 0)
+    {
+        <div class="ui middle aligned selection list">
+            <h2 class="ui dividing header">
+                Tell Us More about "@Model.ProductDesc".
+            </h2>
+            <h5> Nature of Commodity? </h5>
+            @foreach (var item in Model.IModel)
+            {
+                foreach (var tag in item.Tags)
+                {
+
+                    <div class="item">
+                        <div class="content">
+                            <a asp-page="./Import" asp-route-pid="@item.Code" asp-route-productDesc="@Model.ProductDesc" asp-route-settings="tag" class="header">@tag</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+
+
+    <button type="submit" class="ui button "> < Back</button>
+</form>
+
+
+
+@if (Model.IModel.Count == 1 && tags.Count == 0)
+{
+    var p = Model.IModel.FirstOrDefault();
+
+
+    <h2 class="ui dividing header">
+        Harmonised Commodity Code
+    </h2>
+    if (Model.AI)
+    {
+
+        <div class="ui info message">
+            <div class="header">
+                What we know about "@Model.ProductDesc"
+            </div>
+            <ul class="list">
+                <li>
+                    We couldn't find direct match for <span class="ui grey label">"@Model.ProductDesc"</span>, however predicted the following;
+                </li>
+            </ul>
+        </div>
+    }
+    @if (p.PHSCodes != null)
+    {
+        if (p.PHSCodes.Count == 1)
+        {
+            var phscode = p.PHSCodes.FirstOrDefault();
+            <div class="ui info message">
+                <div class="header">
+                    What we know about "@Model.ProductDesc"
+                </div>
+                <div class="ui middle aligned selection list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">@phscode.Description</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+
+    <table class="ui table">
+        <thead>
+            <tr>
+                <th class="text-sm-left">Prev.</th>
+                <th class="text-justify">Code</th>
+                <th class="text-justify">Description</th>
+                <th class="text-sm-right">Next</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (p.HSCodes != null)
+            {
+                foreach (var x in p.HSCodes)
+                {
+                    var levelf = x.Level + 1;
+                    var levelb = x.Level - 1;
+                    var hscodeColor = string.Empty;
+                    if (x.Code.Length >= 7) { hscodeColor = ""; }
+                    <tr class="@hscodeColor">
+                        <td class="text-sm-left">
+                            @if (levelb > 0)
+                            {<a asp-route-id="@x.ParentId" , asp-route-pid="" asp-route-level="@levelb" asp-route-productDesc="@Model.ProductDesc" class="ui button tiny rounded">&laquo;</a>}
+                        </td>
+                        <th class="text-justify">
+                            @if (x.Code.Length >= 7)
+                            {
+                                // <button class="btn btn-light" data-toggle="modal" data-target="#exampleModalCenter">@x.Code</button>
+                                //<a href="/NoteSUI?hscode=@x.Code" data-toggle="modal" data-container='NoteModal' data-title="@x.Code">@x.Code</a>
+                                <a href="/NoteS2?hscode=@x.Code" data-toggle="modal" data-container='NoteModal' data-title="@x.Code">@x.Code</a>
+
+                            }
+                            else
+                            {
+                                <span>@x.Code</span>
+                            }
+                        </th>
+                        <td class="text-justify">@x.Description</td>
+                        <td class="text-sm-right">
+                            @if (x.Code.Length < 7)
+                            {<a asp-route-id="" , asp-route-pid="@x.Id" asp-route-level="@levelf" asp-route-productDesc="@Model.ProductDesc" class="ui button tiny rounded">&raquo;</a>}
+                        </td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+    @*@if (Model.Result != null)
+        {
+            @if (Model.Result.Success)
+            {
+                <table class="table table-bordered text-left">
+
+                    <tr><th>HS Code</th><td>@Model.Result.HSCode</td></tr>
+                    @if (Model.Result.Record != null)
+                    {
+                        <tr><th>Description</th><td>@Model.Result.Record.Description</td></tr>
+                        <tr>
+                            <th>Duty,Levy & Tax (%)</th>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>Duty</td>
+                                        <td>Levy</td>
+                                        <td>VAT</td>
+                                        <td>NAC</td>
+                                        <td>SUR</td>
+                                        <td>ETL</td>
+                                        <td>CIS</td>
+                                    </tr>
+                                    <tr>
+                                        <td> @Model.Result.Record.Duty</td>
+                                        <td> @Model.Result.Record.Levy</td>
+                                        <td> @Model.Result.Record.VAT</td>
+                                        <td> @Model.Result.Record.NAC</td>
+                                        <td> @Model.Result.Record.SUR</td>
+                                        <td> @Model.Result.Record.ETL</td>
+                                        <td> @Model.Result.Record.CIS</td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+                    }
+                    <tr><th>Control & Prohibition</th><td>NA.</td></tr>
+                </table>}
+            else
+            { <p>System could not find HS Code please try again with Product Make/Brand, Model and Name/Description  </p>}
+        }*@
+
+}
+
+
+
+
+
+<!-- Modal -->
+<div class="ui fullscreen modal" id="NoteModal">
+    <i class="close icon"></i>
+    <div class="header">Header</div>
+    <div class="scrolling content">
+        <p>Very long content goes here</p>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui button cancel" data-dismiss="modal">Close</button>
+        @*<button type="button" class="ui button" id="print">Print</button>*@
+    </div>
+</div>
+@*<div class="modal fade" id="NoteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-dark">Print</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+@*@section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script>
+            $('.ui.search')
+                .search({
+                     //allowAdditions: true, hideAdditions: false,
+                    maxResults: 20,
+                    //fullTextSearch:true,
+                    apiSettings: {
+                        // this url parses query server side and returns filtered results
+                        url: '/api/v1/codelist/products/{query}'
+                    }, fields: {
+                        results: 'results',
+                        title: 'name',
+                        //url: 'value'
+                    },
+                    minCharacters: 3,
+                    onSelect: function (result, response) {
+                        //console.log(result.name);
+                        //console.log(response);
+                        $('#ProductDesc').attr('value', result.name);
+                        $('form').submit();
+                        return true;
+                    }
+                });
+        </script>
+    }*@
+
+
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/typeahead.js" crossorigin="anonymous"></script>
+    <script src="~/js/import.js" crossorigin="anonymous"></script>
+    <link href="~/css/import.css" rel="stylesheet" crossorigin="anonymous"/>
+}
+

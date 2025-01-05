@@ -1,0 +1,71 @@
+﻿@page "/admin"
+@model Autumn.UI.Pages.Admin.HomeModel
+@{
+    ViewData["Title"] = "Home";
+}
+<div class="ui two column doubling stackable grid container">
+    <div class="column">
+        <h1 class="ui header"> Commodity Codes and Tariffs.</h1>
+    </div>
+    <div class="column">
+        <div class="ui statistics">
+            <div class="teal statistic">
+                <div class="value">
+                    @Model.ProductCNT.ToString("N0")
+                </div>
+                <div class="label">
+                    Keywords
+                </div>
+            </div>
+            <div class="teal statistic">
+                <div class="value">
+                    @Model.TariffCNT.ToString("N0")
+                </div>
+                <div class="label">
+                    Tariff Line
+                </div>
+            </div>
+            <div class="teal statistic">
+                <div class="value">
+                    @Model.HSCodeCNT.ToString("N0")
+                </div>
+                <div class="label">
+                    HS Codes
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="ui two column doubling stackable grid container">
+        <div class="column">
+
+            <img class="ui image circular" src="~/img/Data report-bro.svg" />
+        </div>
+        <div class="column">
+            <div class="ui divider"></div>
+            <div class="ui fluid placeholder">
+                <div class="image header">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                <div class="paragraph">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="ui fluid placeholder">
+                <div class="image header">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                <div class="paragraph">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+

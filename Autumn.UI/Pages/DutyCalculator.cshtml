@@ -1,0 +1,193 @@
+﻿@page
+@model Autumn.UI.Pages.DutyCalculatorModel
+@{
+    ViewData["Title"] = "DutyCalculator";
+    Layout = "_LayoutSemanticUIFrontend";
+}
+
+
+
+<h2 class="ui center aligned header" style="margin:1em 0;">   Import Commodity Duty Calculator </h2>
+
+<div class="ui grid">
+    <div class="five wide column">
+        <div class="ui compact segment">
+            <form asp-action="Index" method="post" class="ui form">
+                <div class="field">
+                    <label>@Html.DisplayNameFor(x => x.ProductDesc)</label>
+                    <input asp-for="ProductDesc" type="text" class="" placeholder="Enter @Html.DisplayNameFor(x => x.ProductDesc)">
+                </div>
+                <div class="field">
+                    <label>@Html.DisplayNameFor(x => x.HSCode)</label>
+
+                    <div class="ui input action">
+                        <input asp-for="HSCode" type="text" class="" placeholder="Enter @Html.DisplayNameFor(x => x.HSCode)">
+
+                        <button type="button" class="ui button" onclick="findHSCode()">Search</button>
+
+                    </div>
+                </div>
+                <div class="field">
+                    <label>@Html.DisplayNameFor(x => x.Currency)</label>
+
+                    <select asp-for="Currency" asp-items="Model.GetCurrencies" placeholder="Enter @Html.DisplayNameFor(x=>x.Currency)">
+                        <option>Select</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>@Html.DisplayNameFor(x => x.Cost)</label>
+                    <input asp-for="Cost" type="text" class="" placeholder="Enter @Html.DisplayNameFor(x=>x.Cost)">
+                </div>
+                <div class="field">
+                    <label>@Html.DisplayNameFor(x => x.Freight)</label>
+                    <input asp-for="Freight" type="text" class="" placeholder="Enter @Html.DisplayNameFor(x=>x.Freight)">
+                </div>
+                <div class="field">
+                    <label>@Html.DisplayNameFor(x => x.Insurance)</label>
+                    <input asp-for="Insurance" type="text" class="" placeholder="Enter @Html.DisplayNameFor(x=>x.Insurance)">
+                </div>
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <button type="submit" class="ui button positive">Calculate</button>
+            </form>
+        </div>
+    </div>
+    <div class="eleven wide column">
+
+        <table class="table ui basic teal">
+            <tr><td colspan="4" class=""><h3><b>COMMODITY DETAILS</b></h3></td></tr>
+            <tr>
+                <td>HS Code</td>
+                <td> <h5 >@Model.HSCode</h5></td>
+                <td>Computed On</td>
+                <td> <h5 >@DateTime.Now.Date.ToShortDateString()</h5></td>
+            </tr>
+            <tr>
+                <td>Commodity Description</td>
+                <td colspan="3"> <h5 >@Model.ProductDesc</h5></td>
+            </tr>
+            <tr>
+                <td>HS Code Description</td>
+                <td colspan="3"> <h5 >@Model.HSCodeDescription</h5></td>
+            </tr>
+            @*<tr>
+                <td>Explanatory Note</td>
+                <td colspan="3"> <h5 ></h5></td>
+            </tr>
+            <tr>
+                <td>Regulatory Requirements</td>
+                <td colspan="3"> <h5 ></h5></td>
+            </tr>*@
+
+
+            <tr><td colspan="4" class=""><h3><b>COST, INSURANCE & FREIGHT (@Model.Currency) </b></h3></td></tr>
+            <tr>
+                <td>FOB</td>
+                <td> <h5 >@Model.Cost</h5></td>
+                <td>Exchange Rate</td>
+                <td> <h5 >@Model.ExRate</h5></td>
+            </tr>
+            <tr>
+                <td>Freight</td>
+                <td> <h5 >@Model.Freight</h5></td>
+                <td>Insurance</td>
+                <td> <h5 >@Model.Insurance</h5></td>
+            </tr>
+            <tr>
+                <td>Cost and Freight (CF)</td>
+                <td> <h5 >@Model.CF.ToString("N")</h5></td>
+                <td>Cost Ins and Freight(CIF)</td>
+                <td> <h5 >@Model.CIF.ToString("N")</h5></td>
+            </tr>
+
+            <tr>
+                <td>CIF in Nigeria Naira</td>
+                <td> <h5 >@Model.CIFLocal.ToString("N")</h5></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr><td colspan="4" class=""><h3><b>DUTY, TAXES & LEVIES (NGN)</b></h3></td></tr>
+            <tr>
+                <td>IMPORT DUTY @Model.IDRate%</td>
+                <td> <h5 >@Model.IDPayableLocal.ToString("N")</h5></td>
+                <td>NAC @Model.NACRate%</td>
+                <td><h5 >@Model.NACPayableLocal.ToString("N")</h5></td>
+            </tr>
+            <tr>
+                <td>VAT @Model.VATRate%</td>
+                <td> <h5 >@Model.VATPayableLocal.ToString("N")</h5></td>
+                <td>ETL @Model.ETLRate%</td>
+                <td> <h5 >@Model.ETLPayableLocal.ToString("N")</h5></td>
+            </tr>
+            <tr>
+                <td>SURCHARGE @Model.SURRate%</td>
+                <td> <h5 >@Model.SURPayableLocal.ToString("N")</h5></td>
+                <td>CISS @Model.CISSRate%</td>
+                <td><h5 >@Model.CISSPayableLocal.ToString("N")</h5></td>
+            </tr>
+            <tr>
+                <td>OTHER CHARGES</td>
+                <td>N\A</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3"><h3 style="text-align:right; color:red;">PROPOSED DUTY AND TAXES PAYABLE</h3></td>
+                <td width="25%"><h3 style="color:red;">NGN @Model.TotalPayableLocal.ToString("N")</h3></td>
+            </tr>
+        </table>
+        @*<p >
+            Disclaimer:	Please be notified that the duties and values generated via the duty calculator tool on this website serves only as a guide and does not represent the final Customs duty and/or taxes to be paid. The Customs officer at the port of clearance reserves the right to determine the final and appropriate duty and/or taxes based on actual examination carried out.
+        </p>*@
+    </div>
+
+</div>
+
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+        var newWindow;
+    function findHSCode() {
+        var product = $('#ProductDesc').val();
+        if (product == '') {
+            alert('Please specify Commodity Description');
+            return;
+        }
+        var hscode = $('#HSCode').val();
+        var w = 600;
+        var h = 400;
+        var title = "Commodity Classification";
+        var url = "@Url.Page("Import")?productDesc=" + product;
+        // Fixes dual-screen position  Most browsers      Firefox
+        var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
+        var dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
+
+        var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+        var systemZoom = width / window.screen.availWidth;
+        var left = (width - w) / 2 / systemZoom + dualScreenLeft
+        var top = (height - h) / 2 / systemZoom + dualScreenTop
+        newWindow = window.open(url, title, 'scrollbars=yes, width=' + w / systemZoom + ', height=' + h / systemZoom + ', top=' + top + ', left=' + left);
+
+        // Puts focus on the newWindow
+        if (window.focus) newWindow.focus();
+    }
+
+    window.CallParent = function (hscode) {
+        console.log(" Parent window log. HsCode:" + hscode);
+        $('#HSCode').val(hscode);
+        newWindow.close();
+        }
+
+        $(document).ready(function () {
+            var csv_path = "https://www.cbn.gov.ng/Functions/export.asp?tablename=exchange";
+
+        })
+
+    </script>
+}

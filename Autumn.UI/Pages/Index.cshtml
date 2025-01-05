@@ -1,0 +1,39 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    Layout = "_LayoutSemanticUIFrontend";
+}
+<br />
+<h1 class="ui header">  Commodity Codes and Tariffs Classification</h1>
+
+<div class="ui success message" style="margin-top:1em;">
+    <i class="close icon"></i>
+    <div class="header">
+        Commodity Codes and Tariffs Classification
+
+    </div>
+    <p>Classify commodity to get imformation about duty, levy and VAT. Also find out about regulatory requirements for import and export </p>
+
+</div>
+
+
+<div class="ui two column doubling stackable grid container">
+  
+    <div class="column">
+
+        <img src="~/img/Product hunt-bro.svg" />
+        <a asp-page="./Import" class="ui fluid button aligned center">
+            Import Classification
+        </a>
+    </div>
+    <div class="column">
+
+        <img src="~/img/Calculator-bro.svg" />
+        <a asp-page="./dutycalculator" class="ui fluid button aligned center">
+            Duty Calculator
+        </a>
+    </div>
+   
+    
+</div>

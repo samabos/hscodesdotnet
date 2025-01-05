@@ -1,0 +1,67 @@
+﻿@page
+@model Autumn.UI.Pages.Admin.Codes.IndexModel
+@{
+    ViewData["Title"] = "HS Codes";
+}
+
+
+<h1 class="ui justify aligned header">HS Codes</h1>
+@*<a asp-page="./Create" class="ui button medium"> Add New</a>*@
+<div class="ui segment">
+    <table id="datatable" class="ui single line table" style="width:100%">
+        <thead class="">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].PId)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].ParentId)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Id)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].ParentCode)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Code)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Order)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Level)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Description)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        $('#datatable').DataTable({
+            "scrollX": true,
+            "proccessing": true,
+            "serverSide": true,
+            "ajax": {
+                url: "/admin/codes",
+                type: 'POST',
+                headers: { 'RequestVerificationToken': $('@Html.AntiForgeryToken()').val() }
+            },
+            "columnDefs": [
+                {
+                    "targets": -1,
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                        console.log(row);
+                        return '<a href="/admin/codes/edit/' + row.pId + '">Edit</a>| <a href="/admin/codes/details/' + row.pId + '">Details</a> | <a href="/admin/codes/delete/' + row.pId + '">Delete</a>';
+                    },
+                    "sortable": false
+                },
+                { "name": "Id", "data": "id", "targets": 0, "visible": false },
+                { "name": "ParentId", "data": "parentId", "targets": 1 },
+                { "name": "Id", "data": "id", "targets": 2 },
+                { "name": "ParentCode", "data": "parentCode", "targets": 3 },
+                { "name": "Code", "data": "code", "targets": 4 },
+                { "name": "Order", "data": "order", "targets": 5 },
+                { "name": "Level", "data": "level", "targets": 6 },
+                { "name": "Description", "data": "description", "targets": 7 },
+            ],
+            "order": [[6, "asc"]]
+        });
+    });
+    </script>
+}
+
+
+

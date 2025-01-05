@@ -1,0 +1,69 @@
+﻿@page "{id}"
+@model Autumn.UI.Pages.Admin.Codes.EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="ui justify aligned header">HS Codes Edit</h1>
+<div class="ui segment">
+    <form method="post" class="ui form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Row.PId" />
+        <div class="two fields">
+            <div class="field">
+                <label asp-for="Row.ParentId" class=""></label>
+                <input asp-for="Row.ParentId" class="" readonly="readonly" />
+                <span asp-validation-for="Row.ParentId" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Row.Id" class=""></label>
+                <input asp-for="Row.Id" class="" readonly="readonly" />
+                <span asp-validation-for="Row.Id" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="fields">
+            <div class="field">
+                <label asp-for="Row.ParentCode" class=""></label>
+                <input asp-for="Row.ParentCode" class="" />
+                <span asp-validation-for="Row.ParentCode" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Row.Code" class=""></label>
+                <input asp-for="Row.Code" class="" />
+                <span asp-validation-for="Row.Code" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label asp-for="Row.Level" class=""></label>
+                <input asp-for="Row.Level" class="" />
+                <span asp-validation-for="Row.Level" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Row.Order" class=""></label>
+                <input asp-for="Row.Order" class="" />
+                <span asp-validation-for="Row.Order" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="field">
+            <label asp-for="Row.Description" class=""></label>
+            <textarea asp-for="Row.Description" class=""></textarea>
+            <span asp-validation-for="Row.Description" class="text-danger"></span>
+        </div>
+        <div class="field">
+            <label asp-for="Row.SelfExplanatory" class=""></label>
+            <textarea asp-for="Row.SelfExplanatory" class=""></textarea>
+            <span asp-validation-for="Row.SelfExplanatory" class="text-danger"></span>
+        </div>
+   
+        <a asp-page="./Index" class="medium ui button">Back to List</a> <input type="button" onclick="$('form').submit();" value="Save" class="medium ui button grey" />
+
+    </form>
+
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

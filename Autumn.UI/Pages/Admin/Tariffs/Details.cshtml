@@ -1,0 +1,119 @@
+﻿@page "{id}"
+@model Autumn.UI.Pages.Admin.Tariffs.DetailsModel
+@{
+    ViewData["Title"] = "Tariff Details";
+}
+
+
+<h1 class="ui justify aligned header">Tariff Details</h1>
+<div class="ui segment">
+
+    <div class="ui very relaxed list">
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Row.Header)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Row.Header)
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Row.HSCode)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Row.HSCode)
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Row.Description)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Row.Description)
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Row.DUTY)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Row.DUTY)
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Row.VAT)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Row.VAT)
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Row.ETLS)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Row.ETLS)
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Row.SUR)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Row.SUR)
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Row.LEVY)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Row.LEVY)
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Row.CISS)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Row.CISS)
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Row.NAC)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Row.NAC)
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <a asp-page="./Index" class="medium ui button">Back to List</a>
+</div>
+

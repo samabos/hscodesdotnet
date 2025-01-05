@@ -1,0 +1,63 @@
+﻿@page  "{id}"
+@model Autumn.UI.Pages.Admin.Products.DeleteModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+<h1 class="ui justify aligned header">Are you sure you want to delete this?</h1>
+<div class="ui segment">
+
+    <div class="ui very relaxed list">
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Product.Keyword)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Product.Keyword)
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Product.Class)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Product.Class)
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Product.Code)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Product.Code)
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="content">
+                <div class="header">
+                    @Html.DisplayNameFor(model => model.Product.Tags)
+                </div>
+                <div class="description">
+                    @Html.DisplayFor(model => model.Product.Tags)
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <form method="post">
+        <input type="hidden" asp-for="Product.Id" />
+        <a asp-page="./Index" class="medium ui button">Back to List</a>
+        <input type="submit" value="Delete" class="medium ui button red" />
+    </form>
+</div>
+

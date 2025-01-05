@@ -1,0 +1,219 @@
+﻿@page
+@model Autumn.UI.Pages.NoteModel
+@{
+    Layout = "";
+}
+
+
+@if (Model.HSCode.Any())
+{
+    <b>1. Explanatory Note</b>
+    @foreach (var h in Model.HSCode)
+    {
+        <table class="table table-light" style="font-size:small;">
+            <tr>
+                <td>@h.SelfExplanatory</td>
+            </tr>
+        </table>
+    }
+
+    <b>2. Customs Tariff</b>
+    <div class="table-responsive">
+        <table class="table table-light" style="font-size:small;">
+            <tr class="table-info">
+                <th>Tariff Code</th>
+                <td>DUTY</td>
+                <td>VAT</td>
+                <td>LEVY</td>
+                <td>SUR</td>
+                <td>ELTS</td>
+                <td>NAC</td>
+                <td>CISS</td>
+                <td></td>
+            </tr>
+            @if (Model.Tariff.Count > 0)
+            {
+                foreach (var t in Model.Tariff)
+                {
+                    <tr class="table-info">
+                        <th title="@t.Description">@t.HSCode</th>
+                        <td>@t.DUTY %</td>
+                        <td>@t.VAT %</td>
+                        <td>@t.LEVY %</td>
+                        <td>@t.ETLS %</td>
+                        <td>@t.SUR %</td>
+                        <td>@t.NAC %</td>
+                        <td>@t.CISS %</td>
+                        <td>
+                            <button onclick="SendHSCode(this)" class="btn btn-light btn-sm" type="button" data-hscode="@t.HSCode">Use HS Code</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <b>3. Import Regulatory Requirement</b>
+    <table class="table table-light" style="font-size:small;">
+        <tr>
+            <td>Not Available.</td>
+        </tr>
+    </table>
+    @*@if (Model.HSCodeToDocument.Any())
+        {
+            foreach (var h in Model.HSCodeToDocument)
+            {
+                <div class="table-responsive">
+                    <table class="table table-light" style="font-size:small;">
+                        <thead>
+                            <tr class="table-dark"><th colspan="8">@h.HscodeLocal - @h.Description</th></tr>
+
+
+                            <tr class="table-info">
+                                <th>Document</th>
+                                <th>Issuer</th>
+                                <th>Validity</th>
+                                <th>Cost</th>
+                                @* <th>Duration For Issue</th>
+                                    <td>Application Fee </td>
+                                          <td>Permit Fee</td>
+                                          <td>Renewal Fee</td>
+                                          <td>Inspection Fee</td>
+    </tr>
+    </thead>
+    <tbody>
+        @if (!string.IsNullOrEmpty(h.ImpSupermktOrRestaurant))
+        {
+            var docArr = h.ImpSupermktOrRestaurant.Split(',');
+            var doclist = Model.Document.Where(x => docArr.Contains(x.Code)).ToList();
+
+            <tr><th colspan="8">Supermarket OR Restaurant</th></tr>
+            @foreach (var gd in doclist)
+            {
+                <tr>
+                    <td nowrap>@gd.Description</td>
+                    <td>@gd.Issuer</td>
+                    <td>@gd.Validity</td>
+                    <td>@gd.PermitNew</td>
+                    @*  <td>@gd.DurationForIssue</td>
+                              <td>@gd.ApplicationForm</td>
+                        <td>@gd.PermitNew</td>
+                        <td>@gd.PermitRenewal</td>
+                        <td>@gd.InspectionFee</td>
+                </tr>
+            }
+        }
+        @if (!string.IsNullOrEmpty(h.ImpChemicalsOrRawMaterials))
+        {
+            var docArr = h.ImpChemicalsOrRawMaterials.Split(',');
+            var doclist = Model.Document.Where(x => docArr.Contains(x.Code)).ToList();
+
+            <tr><th colspan="8">Chemicals OR Raw Materials</th></tr>
+            @foreach (var gd in doclist)
+            {
+                <tr>
+                    <td nowrap>@gd.Description</td>
+                    <td>@gd.Issuer</td>
+                    <td>@gd.Validity</td>
+                    <td>@gd.PermitNew</td>
+                    @*<td>@gd.DurationForIssue</td>
+                                <td>@gd.ApplicationForm</td>
+                        <td>@gd.PermitNew</td>
+                        <td>@gd.PermitRenewal</td>
+                        <td>@gd.InspectionFee</td>
+                </tr>
+            }
+        }
+        @if (!string.IsNullOrEmpty(h.ImpBulkConsignments))
+        {
+            var bdocArr = h.ImpBulkConsignments.Split(',');
+            var bdoclist = Model.Document.Where(x => bdocArr.Contains(x.Code)).ToList();
+
+            <tr><th colspan="8">Bulk Consignment</th></tr>
+            @foreach (var gd in bdoclist)
+            {
+                <tr>
+                    <td nowrap>@gd.Description</td>
+                    <td>@gd.Issuer</td>
+                    <td>@gd.Validity</td>
+                    <td>@gd.PermitNew</td>
+                    @* <td>@gd.DurationForIssue</td>
+                                       <td>@gd.ApplicationForm</td>
+                        <td>@gd.PermitNew</td>
+                        <td>@gd.PermitRenewal</td>
+                        <td>@gd.InspectionFee</td>
+                </tr>
+            }
+        }
+        @if (!string.IsNullOrEmpty(h.ImpFinishedProductsInRetailPack))
+        {
+            var fpdocArr = h.ImpFinishedProductsInRetailPack.Split(',');
+            var frdoclist = Model.Document.Where(x => fpdocArr.Contains(x.Code)).ToList();
+
+            <tr><th colspan="8">Finished Product In Retail Pack</th></tr>
+            @foreach (var gd in frdoclist)
+            {
+                <tr>
+                    <td nowrap>@gd.Description</td>
+                    <td>@gd.Issuer</td>
+                    <td>@gd.Validity</td>
+                    <td>@gd.PermitNew</td>
+                    @*<td>@gd.DurationForIssue</td>
+                        <td>@gd.ApplicationForm</td>
+                             <td>@gd.PermitNew</td>
+                             <td>@gd.PermitRenewal</td>
+                             <td>@gd.InspectionFee</td>
+                </tr>
+            }
+        }
+        @if (!string.IsNullOrEmpty(h.ImpGeneral))
+        {
+            var gdocArr = h.ImpGeneral.Split(',');
+            var gdoclist = Model.Document.Where(x => gdocArr.Contains(x.Code)).ToList();
+
+            <tr><th colspan="8">General Requirement</th></tr>
+            @foreach (var gd in gdoclist)
+            {
+                <tr>
+                    <td nowrap>@gd.Description</td>
+                    <td>@gd.Issuer</td>
+                    <td>@gd.Validity</td>
+                    <td>@gd.PermitNew</td>
+                    @* <td>@gd.DurationForIssue</td>
+                                       <td>@gd.ApplicationForm</td>
+                        <td>@gd.PermitNew</td>
+                        <td>@gd.PermitRenewal</td>
+                        <td>@gd.InspectionFee</td>
+                </tr>
+            }
+        }
+
+    </tbody>
+    </table>
+    </div>
+}
+    }
+    else
+    {
+<table class="table table-light" style="font-size:small;">
+    <tr>
+        <td>Not Available.</td>
+    </tr>
+</table>
+    }*@
+
+    @*<b>4. Export Regulatory Requirement</b>
+        <table class="table table-light" style="font-size:small;">
+            <tr>
+                <td>Not Available.</td>
+            </tr>
+        </table>*@
+    }
+    else
+    {
+    <b>Information!</b>
+    <table class="table table-light" style="font-size:small;">
+        <tr>
+            <td>Not Available.</td>
+        </tr>
+    </table>
+    }
