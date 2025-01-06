@@ -15,7 +15,7 @@ services:
       - autumn-ui-network
 
   web:
-    image: "sageprojects/hscodes:1.09"
+    image: "sageprojects/hscodes:${GITHUB_RUN_NUMBER}"
     container_name: autumn-ui-web-staging
     restart: always
     expose:
