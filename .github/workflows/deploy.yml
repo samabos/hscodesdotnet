@@ -50,7 +50,7 @@ jobs:
 
       - name: Deploy to VPS
         run: |
-          if [ "${{ github.event.inputs.environment }}" == "production" ]; then
+          if [ "production" == "production" ]; then
             echo "Deploying to production..."
             ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "mkdir -p /root/hscodes && cd /root/hscodes && git pull && docker-compose -f ./docker-compose.prod.yml up -d --build"
           else
