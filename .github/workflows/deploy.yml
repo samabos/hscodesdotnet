@@ -52,9 +52,19 @@ jobs:
         run: |
           if [ "production" == "production" ]; then
             echo "Deploying to production..."
-            ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "mkdir -p /root/hscodes && cd /root/hscodes && git pull && docker-compose -f ./docker-compose.prod.yml up -d --build"
+            ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
+              mkdir -p /root/hscodes && 
+              cd /root/hscodes || 
+              (git clone https://github.com/samabos/hscodesdotnet.git /root/hscodes && cd /root/hscodes); 
+              git pull && 
+              docker-compose -f ./docker-compose.prod.yml up -d --build"
           else
             echo "Deploying to staging..."
-            ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "mkdir -p /root/hscodes && cd /root/hscodes && git pull && docker-compose -f ./docker-compose.staging.yml up -d --build"
+            ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
+              mkdir -p /root/hscodes && 
+              cd /root/hscodes && 
+              git pull && 
+              docker-compose -f ./docker-compose.staging.yml up -d --build"
           fi
+
 
