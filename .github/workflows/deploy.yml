@@ -42,28 +42,33 @@ jobs:
 
       - name: Deploy to VPS
         run: |
-          ENVIRONMENT=${{ github.event_name == 'push' && 'production' || 'staging' }}
+          if [ "${{ github.event_name }}" == "push" ]; then
+            ENVIRONMENT="production"
+          else
+            ENVIRONMENT="staging"
+          fi
           echo "Deploying to $ENVIRONMENT environment..."
 
           ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
-            if [ '$ENVIRONMENT' == 'production' ]; then
-              mkdir -p /root/hscodes &&
-              cd /root/hscodes &&
-            else
-              mkdir -p /root/hscodes-staging &&
-              cd /root/hscodes-staging &&
-            fi
-            if [ ! -d .git ]; then
-              echo 'Directory is not a git repository. Cloning...';
-              git clone https://github.com/samabos/hscodesdotnet.git .;
-            fi;
+          if [ '$ENVIRONMENT' == 'production' ]; then
+            mkdir -p /root/hscodes &&
+            cd /root/hscodes;
+          else
+            mkdir -p /root/hscodes-staging &&
+            cd /root/hscodes-staging;
+          fi &&
+          if [ ! -d .git ]; then
+            echo 'Directory is not a git repository. Cloning...';
+            git clone https://github.com/samabos/hscodesdotnet.git .;
+          fi;
             git reset --hard HEAD &&
             git pull &&
-            if [ '$ENVIRONMENT' == 'production' ]; then
-              export CONNECTION_STRING='${{ secrets.PROD_CONNECTION_STRING }}' &&
-              docker-compose -f ./docker-compose.prod.yml up -d --build;
-            else
-              export CONNECTION_STRING='${{ secrets.STAGING_CONNECTION_STRING }}' &&
-              docker-compose -f ./docker-compose.staging.yml up -d --build;
-            fi
+          if [ '$ENVIRONMENT' == 'production' ]; then
+            export CONNECTION_STRING='${{ secrets.PROD_CONNECTION_STRING }}' &&
+            docker-compose -f ./docker-compose.prod.yml up -d --build;
+          else
+            export CONNECTION_STRING='${{ secrets.STAGING_CONNECTION_STRING }}' &&
+            docker-compose -f ./docker-compose.staging.yml up -d --build;
+          fi
           "
+
