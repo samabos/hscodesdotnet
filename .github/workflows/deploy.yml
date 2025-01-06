@@ -44,9 +44,12 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "push" ]; then
             ENVIRONMENT="production"
+            BRANCH="main"  # Deploy from the main branch for production
           else
             ENVIRONMENT="staging"
+            BRANCH="${{ github.head_ref }}"  # Deploy from the PR branch for staging
           fi
+
           RUN_NUMBER=${{ github.run_number }}  # Get the GitHub Run Number
           echo "Deploying to $ENVIRONMENT environment..."
 
@@ -63,7 +66,9 @@ jobs:
             git clone https://github.com/samabos/hscodesdotnet.git .;
           fi;
             git reset --hard HEAD &&
-            git pull &&
+            git fetch origin $BRANCH &&
+            git checkout $BRANCH &&
+            git pull origin $BRANCH &&
           if [ '$ENVIRONMENT' == 'production' ]; then
             export CONNECTION_STRING='${{ secrets.PROD_CONNECTION_STRING }}' &&
             export GITHUB_RUN_NUMBER=$RUN_NUMBER &&
