@@ -47,7 +47,10 @@ jobs:
 
       - name: Add VPS to known hosts
         run: ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
-        
+      
+      - name: Set up Connection String
+        run: echo "PROD_CONNECTION_STRING=${{ secrets.PROD_CONNECTION_STRING }}" >> $GITHUB_ENV
+
       - name: Deploy to VPS
         run: |
           if [ "production" == "production" ]; then
