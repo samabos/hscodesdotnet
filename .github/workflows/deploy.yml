@@ -1,9 +1,20 @@
 name: Deploy to VPS
 
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Choose environment to deploy'
+        required: true
+        type: choice
+        options:
+          - production
+          - staging
+        default: 'production'
   push:
     branches:
       - main
+      - develop
 
 jobs:
   build-and-deploy:
@@ -36,11 +47,34 @@ jobs:
 
       - name: Add VPS to known hosts
         run: ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
-
+        
       - name: Deploy to VPS
         run: |
-          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
-          cd /root/hscodes &&
-          docker pull ${{ secrets.DOCKER_USERNAME }}/hscodes:1.09 &&
-          docker compose -f ./docker-compose.prod.yml up -d --build
-          "
+          if [ "production" == "production" ]; then
+            echo "Deploying to production..."
+            ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
+              mkdir -p /root/hscodes &&
+              cd /root/hscodes &&
+              if [ ! -d .git ]; then
+                echo 'Directory is not a git repository. Cloning...';
+                git clone https://github.com/samabos/hscodesdotnet.git .;
+              fi;
+              git reset --hard HEAD &&
+              git pull &&
+              docker-compose -f ./docker-compose.prod.yml up -d --build"
+          else
+            echo "Deploying to staging..."
+            ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
+              mkdir -p /root/hscodes &&
+              cd /root/hscodes &&
+              if [ ! -d .git ]; then
+                echo 'Directory is not a git repository. Cloning...';
+                git clone https://github.com/samabos/hscodesdotnet.git .;
+              fi;
+              git reset --hard HEAD &&
+              git pull &&
+              docker-compose -f ./docker-compose.staging.yml up -d --build"
+          fi
+
+
+
