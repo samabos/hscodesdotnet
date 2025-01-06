@@ -63,7 +63,7 @@ jobs:
                 git clone https://github.com/samabos/hscodesdotnet.git .;
               fi;
               git reset --hard HEAD &&
-              git pull &&
+              git pull && export PROD_CONNECTION_STRING='${PROD_CONNECTION_STRING}' &&
               docker-compose -f ./docker-compose.prod.yml up -d --build"
           else
             echo "Deploying to staging..."
