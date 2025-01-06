@@ -17,7 +17,7 @@ services:
       - autumn-ui-network
 
   web:
-    image: "sageprogects/hscodes:1.09" # Replace with your actual DockerHub image name
+    image: "sageprojects/hscodes:1.09" # Replace with your actual DockerHub image name
     container_name: autumn-ui-web
     restart: always
     expose:
