@@ -24,6 +24,7 @@ services:
       - "8080"  # Expose app port to the NGINX service
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - StoreDatabaseSettings__ConnectionString=${PROD_CONNECTION_STRING}
     networks:
       - autumn-ui-network
 
