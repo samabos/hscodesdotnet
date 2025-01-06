@@ -23,7 +23,7 @@ services:
     expose:
       - "8080"  # Expose app port to the NGINX service
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
     networks:
       - autumn-ui-network
 
