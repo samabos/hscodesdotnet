@@ -1,6 +1,16 @@
 name: Deploy to VPS
 
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Choose environment to deploy'
+        required: true
+        type: choice
+        options:
+          - production
+          - staging
+        default: 'production'
   push:
     branches:
       - main
@@ -40,8 +50,11 @@ jobs:
 
       - name: Deploy to VPS
         run: |
-          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
-          cd /root/hscodes &&
-          docker pull ${{ secrets.DOCKER_USERNAME }}/hscodes:1.09 &&
-          docker compose -f ./docker-compose.prod.yml up -d --build
-          "
+          if [ "${{ github.event.inputs.environment }}" == "production" ]; then
+            echo "Deploying to production..."
+            ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "mkdir -p /root/hscodes && cd /root/hscodes && git pull && docker-compose -f ./docker-compose.prod.yml up -d --build"
+          else
+            echo "Deploying to staging..."
+            ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "mkdir -p /root/hscodes && cd /root/hscodes && git pull && docker-compose -f ./docker-compose.staging.yml up -d --build"
+          fi
+
