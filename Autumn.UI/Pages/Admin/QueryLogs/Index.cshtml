@@ -1,0 +1,61 @@
+﻿@page
+@model Autumn.UI.Pages.Admin.QueryLogs.IndexModel
+@{
+    ViewData["Title"] = "Search Query Log";
+}
+
+
+    <h1 class="ui justify aligned header">Search Query Log</h1>
+<div class="ui segment">
+    <table id="datatable" class="ui single line table" style="width:100%">
+        <thead class="">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Id)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Keyword)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Threshold)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Prediction)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Rating)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Created)</th>
+                @*<th></th>*@
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        $('#datatable').DataTable({
+        "scrollX": true,
+            "proccessing": true,
+            "serverSide": true,
+            "ajax": {
+                url: "/admin/querylogs",
+                type: 'POST',
+                headers: { 'RequestVerificationToken': $('@Html.AntiForgeryToken()').val() }
+            },
+            "columnDefs": [
+               // {
+                    //"targets": -1,
+                    //"data": null,
+                    //"render": function (data, type, row, meta) {
+                        //console.log(row);
+                    //    return '<a href="/admin/tariffs/edit/' + row.id + '">Edit</a>| <a href="/admin/tariffs/details/' + row.id + '">Details</a> | <a href="/admin/tariffs/delete/' + row.id + '">Delete</a>';
+                    //},
+                    //"sortable": false
+               // },
+                { "name": "Id", "data": "id", "targets": 0, "visible": false },
+                { "name": "Keyword", "data": "keyword", "targets": 1 },
+                { "name": "Threshold", "data": "threshold", "targets": 2 },
+                { "name": "Prediction", "data": "prediction", "targets": 3 },
+                { "name": "Rating", "data": "rating", "targets": 4 },
+                { "name": "Created", "data": "created", "targets": 5 },
+            ],
+            "order": [[0, "asc"]]
+        });
+    });
+    </script>
+}
+
+

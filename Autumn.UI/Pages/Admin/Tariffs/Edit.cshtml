@@ -1,0 +1,93 @@
+﻿@page "{id}"
+@model Autumn.UI.Pages.Admin.Tariffs.EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="ui justify aligned header">Tariff Edit</h1>
+<div class="ui segment">
+    <form method="post" class="ui form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Row.Id" />
+        <div class="two fields">
+            <div class="field">
+                <label asp-for="Row.HSCode" class=""></label>
+                <input asp-for="Row.HSCode" class=""></input>
+                <span asp-validation-for="Row.HSCode" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Row.Header" class=""></label>
+                <input asp-for="Row.Header" class="" />
+                <span asp-validation-for="Row.Header" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="field">
+            <label asp-for="Row.Description" class=""></label>
+            <textarea asp-for="Row.Description" class=""></textarea>
+            <span asp-validation-for="Row.Description" class="text-danger"></span>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label asp-for="Row.DUTY" class=""></label>
+                <input asp-for="Row.DUTY" class=""></input>
+                <span asp-validation-for="Row.DUTY" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Row.VAT" class=""></label>
+                <input asp-for="Row.VAT" class="" />
+                <span asp-validation-for="Row.VAT" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label asp-for="Row.LEVY" class=""></label>
+                <input asp-for="Row.LEVY" class=""></input>
+                <span asp-validation-for="Row.LEVY" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Row.SUR" class=""></label>
+                <input asp-for="Row.SUR" class="" />
+                <span asp-validation-for="Row.SUR" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="two fields">
+            <div class="field">
+                <label asp-for="Row.ETLS" class=""></label>
+                <input asp-for="Row.ETLS" class=""></input>
+                <span asp-validation-for="Row.ETLS" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Row.CISS" class=""></label>
+                <input asp-for="Row.CISS" class="" />
+                <span asp-validation-for="Row.CISS" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label asp-for="Row.NAC" class=""></label>
+                <input asp-for="Row.NAC" class=""></input>
+                <span asp-validation-for="Row.NAC" class="text-danger"></span>
+            </div>
+        </div>
+        <a asp-page="./Index" class="medium ui button">Back to List</a> <input type="button" onclick="$('form').submit();" value="Save" class="medium ui button grey" />
+
+    </form>
+
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        //$('.ui.dropdown')
+        //    .dropdown({
+        //        allowAdditions: true, hideAdditions: false,
+        //        apiSettings: {
+        //            // this url parses query server side and returns filtered results
+        //            url: '/api/v1/codelist/tags/{query}'
+        //        }
+        //    });
+    </script>
+}

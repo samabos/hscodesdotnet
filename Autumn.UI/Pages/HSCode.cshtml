@@ -1,0 +1,28 @@
+﻿@page
+@model HSCodeModel
+@{
+    ViewData["Title"] = "HSCode";
+}
+
+<h1>HSCode</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead><tbody>
+    @foreach (var x in Model.HSCodes)
+    {
+        var level = ++x.Level;
+        <tr>
+            <td>@x.Code</td>
+            <td>@x.Description</td>
+            <td><a asp-route-id="", asp-route-pid="@x.Id" asp-route-level="@level">link</a></td>
+        </tr>
+
+    }
+
+</tbody>
+</table>

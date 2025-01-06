@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159243847-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-159243847-1');
+    </script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HS.Codes</title>
+
+    <environment include="Development">
+        <link href="~/semantic/semantic.css" rel="stylesheet" />
+
+        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
+        @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/datatables.min.css" />*@
+    </environment>
+    <environment exclude="Development">
+        @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+            asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+            crossorigin="anonymous"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />*@
+        <link href="~/semantic/semantic.css" rel="stylesheet" />
+    </environment>
+    <link href="~/css/autumn.css" rel="stylesheet" />
+    @*<link href="~/css/typeaheadjs.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/site.css" />*@
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.semanticui.min.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="57x57" href="~/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="~/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="~/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="~/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
+    <link rel="manifest" href="~/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="~/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body class="">
+    
+       
+
+        <div class="ui inverted  fixed menu autumnmenu small">
+            <div class="ui container ">
+                <a href="/admin" class=" header item"><i class="home icon"></i>Home</a>
+                <a href="/admin/products" class="item">Keywords Manager</a>
+                <a href="/admin/codes" class="item">HS Codes</a>
+                <a href="/admin/tariffs" class="item">Tariff Manager</a>
+                <a href="/admin/querylogs" class="item">Search Log</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="/logout" class="item right aligned"><i class="icon logout"></i>Logout</a>
+                }
+            </div>
+        </div>
+      
+        <div class="ui main container" style="margin-top:5em; min-height:80%;">
+            <partial name="_CookieConsentPartial" />
+
+            @RenderBody()
+
+        </div>
+        <div class="ui vertical footer segment teal">
+            <div class="ui container">
+                <div class="ui horizontal small link list">
+
+                    <div class="header item"> @DateTime.Now.Year.ToString() hs.codes </div>
+                    <a href="#" class="item">FAQ</a>
+                    <a href="#" class="item">Developer</a>
+                    <a href="#" class="item">Contact</a>
+                </div>
+            </div>
+        </div>
+        @*<footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2019 - HS.Codes - <a asp-area="" asp-page="/Privacy">Privacy</a>
+
+                <a href="mailto:hscodesdev@gmail.com?subject=Mail from Our Site">Let us know about your Comments</a>
+                @*<img src="~/img/mlnet.jpg" width="50" class=" rounded-circle float-right" />
+                    <img src="~/img/mongodb.jpg" width="50" class=" rounded-circle float-right" />
+            </div>
+        </footer>*@
+    
+        <environment include="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>*@
+
+            <script src="https://cdn.datatables.net/v/bs4/dt-1.10.21/datatables.min.js" asp-append-version="true"></script>
+            <script src="https://cdn.datatables.net/1.10.21/js/dataTables.semanticui.min.js " asp-append-version="true"></script>
+            <script src="~/semantic/semantic.js"></script>
+        </environment>
+        <environment exclude="Development">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+            </script>
+            @*<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+            </script>*@
+
+            <script src="https://cdn.datatables.net/v/bs4/dt-1.10.21/datatables.min.js" asp-append-version="true"></script>
+            <script src="https://cdn.datatables.net/1.10.21/js/dataTables.semanticui.min.js " asp-append-version="true"></script>
+            <script src="~/semantic/semantic.js"></script>
+        </environment>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        <script src="~/semantic/components/dropdown.js"  crossorigin="anonymous"></script>
+
+        @RenderSection("Scripts", required: false)
+       
+</body>
+</html>

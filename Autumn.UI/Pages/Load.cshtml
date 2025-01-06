@@ -1,0 +1,67 @@
+﻿@page
+@model Autumn.UI.Pages.LoadModel
+
+@{
+    ViewData["Title"] = "Load";
+}
+
+<h1>Load</h1>
+
+@*<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Hscodes[0].Order)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hscodes[0].Level)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hscodes[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hscodes[0].ParentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hscodes[0].Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hscodes[0].ParentCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hscodes[0].Description)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Hscodes.Take(100)) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+          
+        </tr>
+}
+    </tbody>
+</table>*@

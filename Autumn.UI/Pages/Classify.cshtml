@@ -1,0 +1,223 @@
+﻿@page
+@model Autumn.UI.Pages.ClassifyModel
+
+
+@{
+    ViewData["Title"] = "Import Commodity Classification";
+    Layout = "_LayoutSemanticUIFrontend";
+}
+
+
+
+<div class="ui success message" style="margin-top:1em;">
+    <i class="close icon"></i>
+    <div class="header">
+        Commodity Codes and Tariffs Classification
+
+    </div>
+    <p>Classify commodity to get imformation about duty, levy and VAT. Also find out about regulatory requirements for import and export </p>
+
+</div>
+
+@* Search Control Box Starts *@
+
+
+<h2 class="ui center aligned header" style="margin-top:1em;">Search for Commodity Codes</h2>
+<form asp-action="" method="post" class="" id="form-submit">
+    <div class="ui action input" style="width:100%;">
+        <input asp-for="InputModel.keyword" type="text" class=" keyword big" placeholder="i.e television" aria-describedby="button-addon2">
+
+        <button type="submit" class="ui button positive">Search</button>
+    </div>
+
+    @*
+            <input asp-for="ProductDesc" type="hidden" />
+            <div class="ui center aligned search" style="margin-bottom:2em;">
+                <div class="ui icon input fluid">
+                    <input type="text" class="prompt" placeholder="i.e television" value="@Model.ProductDesc" />
+
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        <button class="ui button rounded" type="submit" id="">Search</button>
+    *@
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+</form>
+
+
+@if (Model.ResultModel.Count > 0)
+{
+    var p = Model.ResultModel.FirstOrDefault().Value.FirstOrDefault();
+    var view = Model.ResultModel.FirstOrDefault().Key;
+
+
+    if (view == "ai")
+    {
+        <img class="ui avatar image" src="~/img/ai-3.png" />
+    }
+    else if (view == "match")
+    {
+        <img class="ui avatar image" src="~/img/innovation.png" />
+    }
+    else if (view == "synonym")
+    {
+        <img class="ui avatar image" src="~/img/blockchain.png" />
+    }
+
+
+    <div class="ui horizontal list">
+        <div class="item">
+
+            <div class="content">
+                <span class="ui label">@view.ToUpper() Result:</span>
+            </div>
+        </div>
+        @foreach (var c in Model.ResultModel.FirstOrDefault().Value)
+        {
+            <div class="item "><div class="content">   <a class="ui label label-post">@c.Prediction</a></div></div>
+        }
+    </div>
+
+    /*  <h2 class="ui dividing header">
+         Tell us more about @Model.InputModel.keyword, Please Select an Option below
+      </h2>
+
+
+
+      @foreach (var r in Model.ResultModel.FirstOrDefault().Value)
+      {
+          if (r.HSCodes != null)
+          {
+              foreach (var x in r.HSCodes)
+              {
+                  var levelf = x.Level + 1;
+                  var levelb = x.Level - 1;
+                  var hscodeColor = string.Empty;
+                  if (x.Code.Length >= 7) { hscodeColor = ""; }
+
+
+                  <div class="ui secondary segment">
+                      <div class="ui list">
+                      @if (r.PHSCodes != null)
+                      {
+                          if (r.PHSCodes.Count == 1)
+                          {
+                              var phscode = r.PHSCodes.FirstOrDefault();
+                      <div class="item">@phscode.Description</div>
+
+                          }
+                      }
+                      <div class="item">@x.Description</div>
+                      </div>
+                  </div>
+
+
+              }
+          }
+      }
+    */
+
+    <h2 class="ui dividing header">
+        Harmonised Commodity Code
+    </h2>
+
+    @if (p.PHSCodes != null)
+    {
+        if (p.PHSCodes.Count == 1)
+        {
+            var phscode = p.PHSCodes.FirstOrDefault();
+            <div class="ui info message">
+                <div class="header">
+                    What we know about "@Model.InputModel.keyword"
+                </div>
+                <div class="ui middle aligned selection list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">@phscode.Description</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+
+<div class="ui segment nav-hscode">
+    <div class="ui active inverted dimmer loadingDiv">
+        <div class="ui text loader">Loading</div>
+    </div>
+    <div class="nav-hscode">
+        @await Html.PartialAsync("_NavHSCode", Model.ResultModel)</div>
+    </div>
+
+}
+
+<h2 class="ui dividing header div-hscode-header">
+    National Details for <strong class="selected-hscode"></strong>
+</h2>
+
+<div class="ui segment teal div-hscode">
+    <div class="ui active inverted dimmer loadingDiv">
+        <div class="ui text loader">Loading</div>
+    </div>
+    <div class="div-hscode-content"></div>
+</div>
+
+
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/typeahead.js" crossorigin="anonymous"></script>
+    <script src="~/js/import.js" crossorigin="anonymous"></script>
+    <link href="~/css/import.css" rel="stylesheet" crossorigin="anonymous" />
+
+    <script>
+        var $loading = $('.loadingDiv').hide();
+        $(document)
+            .ajaxStart(function () {
+                $loading.show();
+            })
+            .ajaxStop(function () {
+                $loading.hide();
+            });
+
+
+        $(document).ready(function () {
+    $(".div-hscode-header").hide();
+    $(".div-hscode").hide();
+            $(".label-post").on("click", function () {
+                $("#InputModel_keyword").val($(this).html());
+                $("#form-submit").submit();
+            });
+            var nav = function () {
+                $loading.show();
+                $.get($(this).attr('formaction'), function (data) {
+                    $(".nav-hscode").html(data);
+                    $(".div-hscode-header").hide();
+                    $(".div-hscode").hide();
+                    $loading.hide();
+                    $(".nav-link").on("click", nav);
+                });
+            }
+            $(".nav-link").on("click", nav);
+        });
+
+        function loadLocalHSCode(me) {
+            $loading.show();
+            $.get($(me).attr('formaction'), function (data) {
+                $(".selected-hscode").html($(me).attr('id'))
+                $(".div-hscode-content").html(data);
+                $(".div-hscode-header").show();
+                $(".div-hscode").show().focus();
+                $('html, body').animate({
+                    scrollTop: ($('.div-hscode').offset().top)
+                }, 500);
+                $loading.hide();
+            });
+        }
+
+    </script >
+}
+

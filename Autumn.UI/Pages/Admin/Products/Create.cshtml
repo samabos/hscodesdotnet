@@ -1,0 +1,56 @@
+﻿@page
+@model Autumn.UI.Pages.Admin.Products.CreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="ui justify aligned header">Create New Keyword</h1>
+<div class="ui segment">
+    <form method="post" class="ui form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Product.CreatedBy" />
+        <input type="hidden" asp-for="Product.ModifiedBy" />
+        <div class="field">
+            <label asp-for="Product.Keyword" class="control-label"></label>
+            <input asp-for="Product.Keyword" class="form-control" />
+            <span asp-validation-for="Product.Keyword" class="red"></span>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label asp-for="Product.Class" class="control-label"></label>
+                <select asp-for="Product.Class" asp-items="@new SelectList(Model.Structure)" class="form-control"><option value="">Select</option></select>
+                <span asp-validation-for="Product.Class" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Product.Code" class="control-label"></label>
+                <input asp-for="Product.Code" class="form-control" />
+                <span asp-validation-for="Product.Code" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="field">
+            <label asp-for="Product.Tags" class="control-label"></label>
+            <select asp-for="Product.Tags" asp-items="new SelectList(Model.Product.Tags)" class="ui fluid multiple search selection dropdown" multiple="">
+                <option value="">Tags</option>
+            </select>
+            <span asp-validation-for="Product.Tags" class="text-danger"></span>
+        </div>
+        <a asp-page="./Index" class="medium ui button">Back to List</a> <input type="button" onclick="$('form').submit();" value="Save" class="medium ui button grey" />
+
+    </form>
+
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('.ui.dropdown')
+            .dropdown({
+                allowAdditions: true, hideAdditions: false,
+                apiSettings: {
+                    // this url parses query server side and returns filtered results
+                    url: '/api/v1/codelist/tags/{query}'
+                }
+            });
+    </script>
+}

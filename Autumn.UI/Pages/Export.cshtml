@@ -1,0 +1,188 @@
+﻿@page
+@model Autumn.UI.Pages.ExportModel
+@{
+    ViewData["Title"] = "Export Commodity Classification";
+    Layout = "_LayoutLight";
+}
+
+
+<div class="text-center">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="">Export Product Classification</h3>
+            @*<div class="input-group mb-3 input-group-lg">*@
+            <form asp-action="Index" method="post" class="">
+                <div class="row">
+                    <div class="col-md-11">
+                        <input asp-for="ProductDesc" type="text" class="form-control rounded keyword" placeholder="i.e television" aria-describedby="button-addon2">
+                    </div>
+
+                    <div class="col-md-1">
+                        <button class="btn btn-secondary rounded" type="submit" id="">Search</button>
+                    </div>
+                </div>
+
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </form>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-light">
+                <thead>
+                    <tr>
+                        <th class="text-sm-left">Prev.</th>
+                        <th class="text-justify">Code</th>
+                        <th class="text-justify">Description</th>
+                        <th class="text-sm-right">Next</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Result2 != null)
+                    {
+                        foreach (var x in Model.Result2)
+                        {
+                            var levelf = x.Level + 1;
+                            var levelb = x.Level - 1;
+                            var hscodeColor = string.Empty;
+                            if (x.Code.Length >= 7) { hscodeColor = ""; }
+                            <tr class="@hscodeColor">
+                                <td class="text-sm-left">
+                                    @if (levelb > 0)
+                                    {<a asp-route-id="@x.ParentId" , asp-route-pid="" asp-route-level="@levelb" asp-route-productDesc="@Model.ProductDesc" class="btn btn-light rounded">&laquo;</a>}
+                                </td>
+                                <th class="text-justify">
+                                    @if (x.Code.Length >= 7)
+                                    {
+                                        // <button class="btn btn-light" data-toggle="modal" data-target="#exampleModalCenter">@x.Code</button>
+                                        <a href="/Note?hscode=@x.Code" data-toggle="modal" data-container='NoteModal' data-title="@x.Code">@x.Code</a>
+
+                                    }
+                                    else
+                                    {
+                                        <span>@x.Code</span>
+                                    }
+                                </th>
+                                <td class="text-justify">@x.Description</td>
+                                <td class="text-sm-right">
+                                    @if (x.Code.Length < 7)
+                                    {<a asp-route-id="" , asp-route-pid="@x.Id" asp-route-level="@levelf" asp-route-productDesc="@Model.ProductDesc" class="btn btn-light rounded">&raquo;</a>}
+                                </td>
+                            </tr>
+
+                        }
+                    }
+                </tbody>
+            </table>
+            @*@if (Model.Result != null)
+                {
+                    @if (Model.Result.Success)
+                    {
+                        <table class="table table-bordered text-left">
+
+                            <tr><th>HS Code</th><td>@Model.Result.HSCode</td></tr>
+                            @if (Model.Result.Record != null)
+                            {
+                                <tr><th>Description</th><td>@Model.Result.Record.Description</td></tr>
+                                <tr>
+                                    <th>Duty,Levy & Tax (%)</th>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>Duty</td>
+                                                <td>Levy</td>
+                                                <td>VAT</td>
+                                                <td>NAC</td>
+                                                <td>SUR</td>
+                                                <td>ETL</td>
+                                                <td>CIS</td>
+                                            </tr>
+                                            <tr>
+                                                <td> @Model.Result.Record.Duty</td>
+                                                <td> @Model.Result.Record.Levy</td>
+                                                <td> @Model.Result.Record.VAT</td>
+                                                <td> @Model.Result.Record.NAC</td>
+                                                <td> @Model.Result.Record.SUR</td>
+                                                <td> @Model.Result.Record.ETL</td>
+                                                <td> @Model.Result.Record.CIS</td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                            }
+                            <tr><th>Control & Prohibition</th><td>NA.</td></tr>
+                        </table>}
+                    else
+                    { <p>System could not find HS Code please try again with Product Make/Brand, Model and Name/Description  </p>}
+                }*@
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="NoteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-dark">Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/typeahead.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            // Sonstructs the suggestion engine
+            var data = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                // The url points to a json file that contains an array of country names
+                prefetch: 'ProductsJSON'
+            });
+
+            // Initializing the typeahead with remote dataset without highlighting
+            $('.keyword').typeahead(null, {
+                name: 'data',
+                source: data,
+                limit: 10 /* Specify max number of suggestions to be displayed */
+            });
+        });
+
+        $("[data-toggle='modal']").click(function (e) {
+            /* Prevent Default*/
+            e.preventDefault();
+
+            /* Parameters */
+            var url = $(this).attr('href');
+            var container = "#" + $(this).attr('data-container');
+            var title = $(this).attr('data-title');
+
+            /* XHR */
+            $.get(url).done(function (data) {
+                $(container + " .modal-title").html(title);
+                $(container + " .modal-body").html(data);
+                $(container).modal();
+            });
+                //.success(function () { $('input:text:visible:first').focus() });
+
+        });
+    </script>
+}
+

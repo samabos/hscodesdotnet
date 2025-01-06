@@ -1,0 +1,72 @@
+﻿@page
+@model Autumn.UI.Pages.Admin.Tariffs.IndexModel
+@{
+    ViewData["Title"] = "Customs Tariffs";
+}
+
+
+<h1 class="ui justify aligned header">Customs Tariffs</h1>
+<a asp-page="./Create" class="ui button medium"> Add New</a>
+<div class="ui segment">
+    <table id="datatable" class="ui single line table" style="width:100%">
+        <thead class="">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Id)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Header)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].HSCode)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].Description)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].DUTY)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].VAT)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].LEVY)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].SUR)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].ETLS)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].CISS)</th>
+                <th>@Html.DisplayNameFor(model => model.Rows[0].NAC)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        $('#datatable').DataTable({
+        "scrollX": true,
+            "proccessing": true,
+            "serverSide": true,
+            "ajax": {
+                url: "/admin/tariffs",
+                type: 'POST',
+                headers: { 'RequestVerificationToken': $('@Html.AntiForgeryToken()').val() }
+            },
+            "columnDefs": [
+                {
+                    "targets": -1,
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                        //console.log(row);
+                        return '<a href="/admin/tariffs/edit/' + row.id + '">Edit</a>| <a href="/admin/tariffs/details/' + row.id + '">Details</a> | <a href="/admin/tariffs/delete/' + row.id + '">Delete</a>';
+                    },
+                    "sortable": false
+                },
+                { "name": "Id", "data": "id", "targets": 0, "visible": false },
+                { "name": "Header", "data": "header", "targets": 1 },
+                { "name": "HSCode", "data": "hsCode", "targets": 2 },
+                { "name": "Description", "data": "description", "targets": 3 },
+                { "name": "DUTY", "data": "duty", "targets": 4 },
+                { "name": "VAT", "data": "vat", "targets": 5 },
+                { "name": "LEVY", "data": "levy", "targets": 6 },
+                { "name": "SUR", "data": "sur", "targets": 7 },
+                { "name": "ETLS", "data": "etls", "targets": 8 },
+                { "name": "CISS", "data": "ciss", "targets": 9 },
+                { "name": "Nac", "data": "nac", "targets": 10 },
+            ],
+            "order": [[0, "asc"]]
+        });
+    });
+    </script>
+}
+
+
