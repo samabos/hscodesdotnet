@@ -17,14 +17,14 @@ services:
       - autumn-ui-network
 
   web:
-    image: "sageprojects/hscodes:1.09" # Replace with your actual DockerHub image name
+    image: "sageprojects/hscodes:${GITHUB_RUN_NUMBER}" # Replace with your actual DockerHub image name
     container_name: autumn-ui-web
     restart: always
     expose:
       - "8080"  # Expose app port to the NGINX service
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - StoreDatabaseSettings__ConnectionString=${PROD_CONNECTION_STRING}
+      - StoreDatabaseSettings__ConnectionString=${CONNECTION_STRING}
     networks:
       - autumn-ui-network
 

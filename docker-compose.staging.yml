@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: autumn-ui-nginx-staging
+    restart: always
+    ports:
+      - "8443:80"  # Staging HTTP traffic
+    volumes:
+      - ./nginx-staging.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - web
+    networks:
+      - autumn-ui-network
+
+  web:
+    image: "sageprojects/hscodes:${GITHUB_RUN_NUMBER}"
+    container_name: autumn-ui-web-staging
+    restart: always
+    expose:
+      - "9090"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+      - StoreDatabaseSettings__ConnectionString=${CONNECTION_STRING}
+    networks:
+      - autumn-ui-network
+
+networks:
+  autumn-ui-network:
+    driver: bridge

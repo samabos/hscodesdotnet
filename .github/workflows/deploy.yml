@@ -1,32 +1,24 @@
 name: Deploy to VPS
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Choose environment to deploy'
-        required: true
-        type: choice
-        options:
-          - production
-          - staging
-        default: 'production'
+  pull_request:
+    branches:
+      - main # Deploy staging on PR to the main branch
   push:
     branches:
-      - main
-    #  - develop
+      - main # Deploy production on push to the main branch
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest  
-    
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      
+
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -36,7 +28,7 @@ jobs:
       - name: Build and push Docker image to DockerHub
         run: |
           docker buildx build --platform linux/amd64 \
-            -t ${{ secrets.DOCKER_USERNAME }}/hscodes:1.09 \
+            -t ${{ secrets.DOCKER_USERNAME }}/hscodes:${{ github.run_number }} \
             --file Autumn.UI/Dockerfile \
             --push .
 
@@ -47,37 +39,44 @@ jobs:
 
       - name: Add VPS to known hosts
         run: ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
-      
-      - name: Set up Connection String
-        run: echo "PROD_CONNECTION_STRING=${{ secrets.PROD_CONNECTION_STRING }}" >> $GITHUB_ENV
 
       - name: Deploy to VPS
         run: |
-          if [ "production" == "production" ]; then
-            echo "Deploying to production..."
-            ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
-              mkdir -p /root/hscodes &&
-              cd /root/hscodes &&
-              if [ ! -d .git ]; then
-                echo 'Directory is not a git repository. Cloning...';
-                git clone https://github.com/samabos/hscodesdotnet.git .;
-              fi;
-              git reset --hard HEAD &&
-              git pull && export PROD_CONNECTION_STRING='${PROD_CONNECTION_STRING}' &&
-              docker-compose -f ./docker-compose.prod.yml up -d --build"
+          if [ "${{ github.event_name }}" == "push" ]; then
+            ENVIRONMENT="production"
+            BRANCH="main"  # Deploy from the main branch for production
           else
-            echo "Deploying to staging..."
-            ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
-              mkdir -p /root/hscodes &&
-              cd /root/hscodes &&
-              if [ ! -d .git ]; then
-                echo 'Directory is not a git repository. Cloning...';
-                git clone https://github.com/samabos/hscodesdotnet.git .;
-              fi;
-              git reset --hard HEAD &&
-              git pull &&
-              docker-compose -f ./docker-compose.staging.yml up -d --build"
+            ENVIRONMENT="staging"
+            BRANCH="${{ github.head_ref }}"  # Deploy from the PR branch for staging
           fi
 
+          RUN_NUMBER=${{ github.run_number }}  # Get the GitHub Run Number
+          echo "Deploying to $ENVIRONMENT environment..."
 
+          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
+          if [ '$ENVIRONMENT' == 'production' ]; then
+            mkdir -p /root/hscodes &&
+            cd /root/hscodes;
+          else
+            mkdir -p /root/hscodes-staging &&
+            cd /root/hscodes-staging;
+          fi &&
+          if [ ! -d .git ]; then
+            echo 'Directory is not a git repository. Cloning...';
+            git clone https://github.com/samabos/hscodesdotnet.git .;
+          fi;
+            git reset --hard HEAD &&
+            git fetch origin $BRANCH &&
+            git checkout $BRANCH &&
+            git pull origin $BRANCH &&
+          if [ '$ENVIRONMENT' == 'production' ]; then
+            export CONNECTION_STRING='${{ secrets.PROD_CONNECTION_STRING }}' &&
+            export GITHUB_RUN_NUMBER=$RUN_NUMBER &&
+            docker-compose -f ./docker-compose.prod.yml up -d --build;
+          else
+            export CONNECTION_STRING='${{ secrets.STAGING_CONNECTION_STRING }}' &&
+            export GITHUB_RUN_NUMBER=$RUN_NUMBER &&
+            docker-compose -f ./docker-compose.staging.yml up -d --build;
+          fi
+          "
 
