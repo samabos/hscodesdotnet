@@ -5,6 +5,7 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Autumn.UI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,9 @@ namespace Autumn.UI.Pages.Admin.Products
     public class IndexModel : PageModel
     {
 
-        private readonly ProductService _productService;
+        private readonly IProductService _productService;
 
-        public IndexModel(ProductService productService)
+        public IndexModel(IProductService productService)
         {
             _productService = productService;
         }

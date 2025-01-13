@@ -1,36 +1,29 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Autumn.UI.Contract.V1.Responses;
 using Autumn.Domain.Models;
-using Autumn.Domain.Services;
 using Autumn.UI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
-using AutoMapper;
-using Autumn.BL.Interface.V3;
+using Autumn.Service.Interface;
 
 namespace Autumn.UI.Pages
 {
     public class ImportModel : PageModel
     {
         private IConfiguration _configuration;
-        private HttpClient _client;
-        private readonly HSCodeService _hscodeService;
-        private readonly ProductService _productService;
-        private readonly IMapper _mapper;
+        private readonly IProductService _productService;
         private readonly IClassification _classification;
+        private readonly IHsCodeService _hsCodeService;
 
-        public ImportModel(IConfiguration configuration, HSCodeService hscodeService, ProductService productService
-            , IMapper mapper
+        public ImportModel(IConfiguration configuration, IHsCodeService hsCodeService, IProductService productService
             , IClassification classification)
         {
             _configuration = configuration;
-            _client = new HttpClient();
-            _hscodeService = hscodeService;
+            _hsCodeService = hsCodeService;
             _productService = productService;
             IModel = new List<ResultModel>();
             AI = false;
-            _mapper = mapper;
             _classification = classification;
         }
         public ClassifyCommodityResponse Result { get; set; }
@@ -58,16 +51,16 @@ namespace Autumn.UI.Pages
 
             if (settings == "nav")
             {
-                rm.HSCodes = await _hscodeService.GetWithOptionsAsync(id, pid, level);
+                rm.HSCodes = await _hsCodeService.GetWithOptionsAsync(id, pid, level);
                 if (!string.IsNullOrEmpty(pid))
-                    rm.PHSCodes = await _hscodeService.GetWithOptionsAsync(pid, null, null);
+                    rm.PHSCodes = await _hsCodeService.GetWithOptionsAsync(pid, null, null);
 
             }
             else if (settings == "tag")
             {
-                rm.HSCodes = await _hscodeService.GetWithHSCodeOptionsAsync(id, pid, level);
+                rm.HSCodes = await _hsCodeService.GetWithHSCodeOptionsAsync(id, pid, level);
                 if (!string.IsNullOrEmpty(pid))
-                    rm.PHSCodes = await _hscodeService.GetWithHSCodeOptionsAsync(pid, null, null);
+                    rm.PHSCodes = await _hsCodeService.GetWithHSCodeOptionsAsync(pid, null, null);
             }
 
             IModel.Add(rm);
@@ -94,14 +87,15 @@ namespace Autumn.UI.Pages
                             rm = new ResultModel();
                             rm.Tags = new List<string>();
                             //   var aiarr = product.Key.Split('-');
-                            rm.HSCodes = await _hscodeService.GetWithHSCodeOptionsAsync(product.Code, null, null);
+                            rm.HSCodes = await _hsCodeService.GetWithHSCodeOptionsAsync(product.Code, null, null);
                             //rm.HSCodes = Result2;
                             rm.Prediction = product.Keyword;
                             rm.Code = product.Code;
                             if (product.Tags != null)
                                 rm.Tags.AddRange(product.Tags);
                             //rm.Rating = item.Value;
-                            rm.PHSCodes = await _hscodeService.GetWithOptionsAsync(rm.HSCodes.FirstOrDefault().ParentId, null, null);
+                            if(rm.HSCodes.Count > 0)
+                                rm.PHSCodes = await _hsCodeService.GetWithOptionsAsync(rm.HSCodes.FirstOrDefault().ParentId, null, null);
                             IModel.Add(rm);
                             if (ctn == 0) return Page();
                         }
@@ -117,7 +111,7 @@ namespace Autumn.UI.Pages
                         foreach (var item in ai)
                         {
                             var aiarr = item.Key.Split('-');
-                            rm.HSCodes.AddRange(await _hscodeService.GetWithHSCodeOptionsAsync(aiarr[1], null, null));
+                            rm.HSCodes.AddRange(await _hsCodeService.GetWithHSCodeOptionsAsync(aiarr[1], null, null));
                             //rm.HSCodes = Result2;
                             //rm.Code = aiarr[1];
                             //rm.Rating = item.Value;

@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Autumn.UI.Contract.V1.Responses;
 using Autumn_UIML.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace Autumn.UI.Pages
     {
         private IConfiguration _configuration;
         private HttpClient _client;
-        private readonly HSCodeService _hscodeService;
-        public ExportModel(IConfiguration configuration, HSCodeService hscodeService)
+        private readonly IHsCodeService _hscodeService;
+        public ExportModel(IConfiguration configuration, IHsCodeService hscodeService)
         {
             _configuration = configuration;
             _client = new HttpClient();

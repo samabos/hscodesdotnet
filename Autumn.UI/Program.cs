@@ -1,16 +1,16 @@
 using System.Net;
-using Autumn.BL.Interface.V3;
-using Autumn.BL.Services.V3;
 using Autumn.Domain.Data;
 using Autumn.Domain.Infra;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
 using Autumn.Domain.Validators;
+using Autumn.Repository;
+using Autumn.Service;
+using Autumn.Service.Interface;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,24 +47,27 @@ configuration.GetSection(nameof(StoreDatabaseSettings)));
 builder.Services.AddSingleton<IStoreDatabaseSettings>(sp =>
     sp.GetRequiredService<IOptions<StoreDatabaseSettings>>().Value);
 
+builder.Services.AddRepositoryServices();
+builder.Services.AddBusinessServices();
+
 // Add scoped services and validators
-builder.Services.AddSingleton<HSCodeService>();
-builder.Services.AddSingleton<ProductService>().AddTransient<IValidator<Product>, ProductValidator>();
-builder.Services.AddSingleton<CustomsTariffService>().AddTransient<IValidator<CustomsTariff>, CustomsTariffValidator>();
+//builder.Services.AddSingleton<HSCodeService>();
+//builder.Services.AddSingleton<Autumn.Domain.Services.ProductService>().AddTransient<IValidator<Product>, ProductValidator>();
+//builder.Services.AddSingleton<CustomsTariffService>().AddTransient<IValidator<CustomsTariff>, CustomsTariffValidator>();
 
 builder.Services.AddSingleton<ProductService2>();
 builder.Services.AddSingleton<KeywordService>();
-builder.Services.AddSingleton<SearchLogService>();
+//builder.Services.AddSingleton<SearchLogService>();
 builder.Services.AddSingleton<DocumentService>();
 builder.Services.AddSingleton<HSCodeToDocumentService>();
 builder.Services.AddSingleton<CurrencyService>();
-builder.Services.AddSingleton<CustomsTariffService>().AddTransient<IValidator<CustomsTariff>, CustomsTariffValidator>();
+//builder.Services.AddSingleton<CustomsTariffService>().AddTransient<IValidator<CustomsTariff>, CustomsTariffValidator>();
 builder.Services.AddSingleton<RequirementService>();
 //services.AddSingleton<IdentityService>();
 builder.Services.AddSingleton<IExRate, ExRate>();
 builder.Services.AddSingleton<IPredict, Predict>();
 builder.Services.AddSingleton<ITokenizer, Tokenizer>();
-builder.Services.AddSingleton<IClassification, Classification>();
+builder.Services.AddScoped<IClassification, Classification>();
 
 // AutoMapper configuration
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

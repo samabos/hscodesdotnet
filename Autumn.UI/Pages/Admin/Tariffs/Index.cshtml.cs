@@ -5,6 +5,7 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Autumn.UI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,9 @@ namespace Autumn.UI.Pages.Admin.Tariffs
     public class IndexModel : PageModel
     {
 
-        private readonly CustomsTariffService _ctService;
+        private readonly ICustomsTariffService _ctService;
 
-        public IndexModel(CustomsTariffService ctService)
+        public IndexModel(ICustomsTariffService ctService)
         {
             _ctService = ctService;
         }

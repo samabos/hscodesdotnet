@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,11 +13,11 @@ namespace Autumn.UI.Pages.Admin
     [Authorize]
     public class HomeModel : PageModel
     {
-        private readonly ProductService _productService;
-        private readonly HSCodeService _hscodeService;
-        private readonly CustomsTariffService _ctService;
+        private readonly IProductService _productService;
+        private readonly IHsCodeService _hscodeService;
+        private readonly ICustomsTariffService _ctService;
 
-        public HomeModel(ProductService productService, HSCodeService hscodeService, CustomsTariffService ctService)
+        public HomeModel(IProductService productService, IHsCodeService hscodeService, ICustomsTariffService ctService)
         {
             _productService = productService;
             _hscodeService = hscodeService;

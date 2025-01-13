@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Autumn.Domain.Infra;
-using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,9 +12,9 @@ namespace Autumn.UI.Pages
     {
         private IExRate _exRate;
         private readonly CurrencyService _curencyService;
-        private readonly CustomsTariffService _tariffService;
+        private readonly ICustomsTariffService _tariffService;
 
-        public DutyCalculatorModel(IExRate exRate, CurrencyService curencyService, CustomsTariffService tariffService) {
+        public DutyCalculatorModel(IExRate exRate, CurrencyService curencyService, ICustomsTariffService tariffService) {
             _exRate = exRate;
             _curencyService = curencyService;
             _tariffService = tariffService;
@@ -79,7 +75,7 @@ namespace Autumn.UI.Pages
         {
             GetCurrencies = _curencyService.Get().Select(x=> new SelectListItem {Text=x.CurrencyCode,Value=x.CurrencyCode}).ToList();
         }
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
 
             GetCurrencies = _curencyService.Get().Select(x => new SelectListItem { Text = x.CurrencyCode, Value = x.CurrencyCode }).ToList();
@@ -88,7 +84,7 @@ namespace Autumn.UI.Pages
                 try
                 {
                     //Get HS Code Tariff 
-                    var tariff = _tariffService.GetByHSCode(HSCode);
+                    var tariff = await _tariffService.GetByHSCodeAsync(HSCode);
                     var currency = _curencyService.GetByCurrency(Currency);
                     var cif = Cost + Insurance + Freight;
                     var cf = Cost + Freight;

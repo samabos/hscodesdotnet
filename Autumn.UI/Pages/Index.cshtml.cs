@@ -7,6 +7,7 @@ using Autumn_UIML.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Autumn.Service.Interface;
 
 namespace Autumn.UI.Pages
 {
@@ -15,10 +16,10 @@ namespace Autumn.UI.Pages
     {
         private IConfiguration _configuration;
         private HttpClient _client;
-        private readonly HSCodeService _hscodeService;
-        private readonly ProductService _productService;
+        private readonly IHsCodeService _hscodeService;
+        private readonly IProductService _productService;
 
-        public IndexModel(IConfiguration configuration, HSCodeService hscodeService, ProductService productService)
+        public IndexModel(IConfiguration configuration, IHsCodeService hscodeService, IProductService productService)
         {
             _configuration = configuration;
             _client = new HttpClient();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -11,9 +12,9 @@ namespace Autumn.UI.Pages.Admin.Tariffs
 {
     public class DeleteModel : PageModel
     {
-        private readonly CustomsTariffService _ctService;
+        private readonly ICustomsTariffService _ctService;
 
-        public DeleteModel(CustomsTariffService ctService)
+        public DeleteModel(ICustomsTariffService ctService)
         {
             _ctService = ctService;
         }
@@ -49,7 +50,7 @@ namespace Autumn.UI.Pages.Admin.Tariffs
 
             if (Row != null)
             {
-                _ctService.Remove(Row);
+                _ctService.RemoveAsync(Row.Id);
             }
 
 

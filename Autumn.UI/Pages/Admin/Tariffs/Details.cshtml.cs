@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -11,9 +12,9 @@ namespace Autumn.UI.Pages.Admin.Tariffs
 {
     public class DetailsModel : PageModel
     {
-        private readonly CustomsTariffService _ctService;
+        private readonly ICustomsTariffService _ctService;
 
-        public DetailsModel(CustomsTariffService ctService)
+        public DetailsModel(ICustomsTariffService ctService)
         {
             _ctService = ctService;
         }

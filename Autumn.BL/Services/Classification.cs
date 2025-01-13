@@ -2,33 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Autumn.BL.Interface.V3;
 using Autumn.BL.Models.Request.V3;
 using Autumn.BL.Models.Response.V3;
 using Autumn.Domain.Infra;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Autumn_UIML.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RestSharp;
 
-namespace Autumn.BL.Services.V3
+namespace Autumn.Service
 {
     public class Classification : IClassification
     {
-        private readonly HSCodeService _hscodeService;
-        private readonly IPredict _predict;
-        private readonly ProductService _productService;
-        private readonly SearchLogService _searchlogService;
+        private readonly IHsCodeService _hsCodeService;
+        private readonly IProductService _productService;
+        private readonly ISearchLogService _searchlogService;
         private IConfiguration _configuration;
 
-        public Classification(IConfiguration configuration, HSCodeService hscodeService, IPredict predict
-            , ProductService productService
-            , SearchLogService searchlogService)
+        public Classification(IConfiguration configuration, IHsCodeService hsCodeService
+            , IProductService productService
+            , ISearchLogService searchlogService)
         {
-            _hscodeService = hscodeService;
-            _predict = predict;
+            _hsCodeService = hsCodeService;
             _productService = productService;
             _configuration = configuration;
             _searchlogService = searchlogService;
@@ -124,14 +122,14 @@ namespace Autumn.BL.Services.V3
             BLResultModel rm = new BLResultModel();
             rm.Tags = new List<string>();
             //   var aiarr = product.Key.Split('-');
-            rm.HSCodes = await _hscodeService.GetWithHSCodeOptionsAsync(product.Code, null, null);
+            rm.HSCodes = await _hsCodeService.GetWithHSCodeOptionsAsync(product.Code, null, null);
             //rm.HSCodes = Result2;
             rm.Prediction = product.Keyword;
             rm.Code = product.Code;
             if (product.Tags != null)
                 rm.Tags.AddRange(product.Tags);
             //rm.Rating = item.Value;
-            rm.PHSCodes = await _hscodeService.GetWithOptionsAsync(rm.HSCodes.FirstOrDefault().ParentId, null, null);
+            rm.PHSCodes = await _hsCodeService.GetWithOptionsAsync(rm.HSCodes.FirstOrDefault().ParentId, null, null);
             rms.Add(rm);
             return rm;
         }
@@ -183,7 +181,7 @@ namespace Autumn.BL.Services.V3
             foreach (var item in ai)
             {
                 var aiarr = item.Key.Split('-');
-                rm.HSCodes.AddRange(await _hscodeService.GetWithHSCodeOptionsAsync(aiarr[1], null, null));
+                rm.HSCodes.AddRange(await _hsCodeService.GetWithHSCodeOptionsAsync(aiarr[1], null, null));
                 //rm.HSCodes = Result2;
                 //rm.Code = aiarr[1];
                 //rm.Rating = item.Value;
@@ -200,16 +198,17 @@ namespace Autumn.BL.Services.V3
         {
             if (request.settings == "nav")
             {
-                rm.HSCodes = await _hscodeService.GetWithOptionsAsync(request.id, request.pid, request.level);
+                rm.HSCodes = await _hsCodeService.GetWithOptionsAsync(request.id, request.pid, request.level);
                 if (!string.IsNullOrEmpty(request.pid))
-                    rm.PHSCodes = await _hscodeService.GetWithOptionsAsync(request.pid, null, null);
+                    rm.PHSCodes = await _hsCodeService.GetWithOptionsAsync(request.pid, null, null);
+                    rm.PHSCodes = await _hsCodeService.GetWithOptionsAsync(request.pid, null, null);
 
             }
             else if (request.settings == "tag")
             {
-                rm.HSCodes = await _hscodeService.GetWithHSCodeOptionsAsync(request.id, request.pid, request.level);
+                rm.HSCodes = await _hsCodeService.GetWithHSCodeOptionsAsync(request.id, request.pid, request.level);
                 if (!string.IsNullOrEmpty(request.pid))
-                    rm.PHSCodes = await _hscodeService.GetWithHSCodeOptionsAsync(request.pid, null, null);
+                    rm.PHSCodes = await _hsCodeService.GetWithHSCodeOptionsAsync(request.pid, null, null);
             }
 
             rms.Add(rm);
@@ -233,7 +232,7 @@ namespace Autumn.BL.Services.V3
                 if (i < 1)
                 {
                     var log = new SearchLog { Keyword = product, Threshold = threshold, Prediction = result.Key, Rating = result.Value, Created = DateTime.Now };
-                    _searchlogService.Create(log);
+                    _searchlogService.CreateAsync(log);
                 }
                 i++;
                 if (threshold > result.Value) predictionResult.Remove(result.Key);

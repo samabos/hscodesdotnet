@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -11,12 +12,12 @@ namespace Autumn.UI.Pages
 {
     public class NoteModel : PageModel
     {
-        private readonly HSCodeService _hscodeService;
+        private readonly IHsCodeService _hscodeService;
         private readonly DocumentService _documentService;
         private readonly HSCodeToDocumentService _hscodeToDocumentService;
-        private readonly CustomsTariffService _customsTariffService;
+        private readonly ICustomsTariffService _customsTariffService;
 
-        public NoteModel(HSCodeService hscodeService, DocumentService documentService, HSCodeToDocumentService hscodeToDocumentService, CustomsTariffService customsTariffService) {
+        public NoteModel(IHsCodeService hscodeService, DocumentService documentService, HSCodeToDocumentService hscodeToDocumentService, ICustomsTariffService customsTariffService) {
             _hscodeService = hscodeService;
             _documentService = documentService;
             _hscodeToDocumentService = hscodeToDocumentService;

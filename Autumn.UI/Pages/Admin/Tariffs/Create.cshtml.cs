@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Autumn.Domain.Models;
-using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -11,9 +10,9 @@ namespace Autumn.UI.Pages.Admin.Tariffs
 {
     public class CreateModel : PageModel
     {
-        private readonly CustomsTariffService _ctService;
+        private readonly ICustomsTariffService _ctService;
 
-        public CreateModel(CustomsTariffService ctService)
+        public CreateModel(ICustomsTariffService ctService)
         {
             _ctService = ctService;
         }
@@ -35,7 +34,7 @@ namespace Autumn.UI.Pages.Admin.Tariffs
                 return Page();
             }
 
-            _ctService.Create(Row);
+            _ctService.CreateAsync(Row);
 
 
             return RedirectToPage("./Index");
@@ -43,7 +42,7 @@ namespace Autumn.UI.Pages.Admin.Tariffs
 
         private bool ProductExists(string id)
         {
-            if (_ctService.Get(id) != null)
+            if (_ctService.GetAsync(id) != null)
                 return true;
             else return false;
 

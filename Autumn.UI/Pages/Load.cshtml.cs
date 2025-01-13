@@ -2,6 +2,7 @@
 using Autumn.Domain.Services;
 using Autumn.Domain.Models;
 using Autumn.Domain.Infra;
+using Autumn.Service.Interface;
 
 namespace Autumn.UI.Pages
 {
@@ -9,8 +10,8 @@ namespace Autumn.UI.Pages
     {
         private readonly Autumn.Domain.Data.classificationContext _context;
 
-        private readonly HSCodeService _hscodeService;
-        private readonly ProductService _productService;
+        private readonly IHsCodeService _hscodeService;
+        private readonly IProductService _productService;
         private readonly ProductService2 _productService2;
         private readonly DocumentService _documentService;
         private readonly HSCodeToDocumentService _hscodeToDocumentService;
@@ -18,8 +19,8 @@ namespace Autumn.UI.Pages
         private readonly IExRate _exRate;
         private readonly ITokenizer _tokenizer;
 
-        public LoadModel(Autumn.Domain.Data.classificationContext context, HSCodeService hscodeService,
-            ProductService productService, ProductService2 productService2, DocumentService documentService,
+        public LoadModel(Autumn.Domain.Data.classificationContext context, IHsCodeService hscodeService,
+            IProductService productService, ProductService2 productService2, DocumentService documentService,
             HSCodeToDocumentService hscodeToDocumentService, CurrencyService curencyService,
             IExRate exRate,
             ITokenizer tokenizer)

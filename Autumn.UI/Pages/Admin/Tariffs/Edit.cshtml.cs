@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autumn.Domain.Models;
-using Autumn.UI.Options;
-using Autumn.Domain.Services;
+﻿using Autumn.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
+using Autumn.Service.Interface;
 
 
 namespace Autumn.UI.Pages.Admin.Tariffs
@@ -15,9 +10,9 @@ namespace Autumn.UI.Pages.Admin.Tariffs
     [Authorize]
     public class EditModel : PageModel
     {
-        private readonly CustomsTariffService _ctService;
+        private readonly ICustomsTariffService _ctService;
 
-        public EditModel(CustomsTariffService ctService)
+        public EditModel(ICustomsTariffService ctService)
         {
             _ctService = ctService;
         }
@@ -49,7 +44,7 @@ namespace Autumn.UI.Pages.Admin.Tariffs
                 return Page();
             }
 
-            _ctService.Update(Row.Id, Row);
+            _ctService.UpdateAsync(Row.Id, Row);
 
 
             return RedirectToPage("./Index");
@@ -57,7 +52,7 @@ namespace Autumn.UI.Pages.Admin.Tariffs
 
         private bool ProductExists(string id)
         {
-            if (_ctService.Get(id) != null)
+            if (_ctService.GetAsync(id) != null)
                 return true;
             else return false;
 
