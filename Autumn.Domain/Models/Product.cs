@@ -24,5 +24,7 @@ namespace Autumn.Domain.Models
 
         public bool IsActive { get; set; }
 
+        public int __v { get; set; }
+
     }
 }

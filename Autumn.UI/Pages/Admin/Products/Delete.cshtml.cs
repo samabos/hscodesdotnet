@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,9 +14,9 @@ namespace Autumn.UI.Pages.Admin.Products
     [Authorize]
     public class DeleteModel : PageModel
     {
-        private readonly ProductService _productService;
+        private readonly IProductService _productService;
 
-        public DeleteModel(ProductService productService)
+        public DeleteModel(IProductService productService)
         {
             _productService = productService;
         }
@@ -51,7 +52,7 @@ namespace Autumn.UI.Pages.Admin.Products
 
             if (Product != null)
             {
-                _productService.Remove(Product);
+                _productService.RemoveAsync(Product.Id);
             }
 
             return RedirectToPage("./Index");

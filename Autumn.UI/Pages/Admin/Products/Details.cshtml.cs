@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,9 +14,9 @@ namespace Autumn.UI.Pages.Admin.Products
     [Authorize]
     public class DetailsModel : PageModel
     {
-        private readonly ProductService _productService;
+        private readonly IProductService _productService;
 
-        public DetailsModel(ProductService productService)
+        public DetailsModel(IProductService productService)
         {
             _productService = productService;
         }

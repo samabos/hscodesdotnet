@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Autumn.BL\Autumn.BL.csproj" />
+    <ProjectReference Include="..\Autumn.BL\Autumn.Service.csproj" />
     <ProjectReference Include="..\Autumn.Domain\Autumn.Domain.csproj" />
   </ItemGroup>
 

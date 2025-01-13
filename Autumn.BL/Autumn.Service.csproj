@@ -6,20 +6,17 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Interface\" />
     <Folder Include="Models\Request\" />
     <Folder Include="Models\Response\" />
-    <Folder Include="Services\" />
-    <Folder Include="Services\V3\" />
     <Folder Include="Models\Request\V3\" />
     <Folder Include="Models\Response\V3\" />
-    <Folder Include="Interface\V3\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Autumn.Domain\Autumn.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="RestSharp" Version="112.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Autumn.Domain\Autumn.Domain.csproj" />
+    <ProjectReference Include="..\Autumn.Repository\Autumn.Repository.csproj" />
   </ItemGroup>
 </Project>

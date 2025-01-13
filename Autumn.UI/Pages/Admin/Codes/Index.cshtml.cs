@@ -5,6 +5,7 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Autumn.UI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,9 @@ namespace Autumn.UI.Pages.Admin.Codes
     [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly HSCodeService _hscodeService;
+        private readonly IHsCodeService _hscodeService;
 
-        public IndexModel(HSCodeService hscodeService) {
+        public IndexModel(IHsCodeService hscodeService) {
             _hscodeService = hscodeService;
         }
 

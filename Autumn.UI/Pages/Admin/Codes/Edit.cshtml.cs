@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,9 +15,9 @@ namespace Autumn.UI.Pages.Admin.Codes
         [Authorize]
         public class EditModel : PageModel
         {
-        private readonly HSCodeService _hscodeService;
+        private readonly IHsCodeService _hscodeService;
 
-        public EditModel(HSCodeService hscodeService)
+        public EditModel(IHsCodeService hscodeService)
             {
             _hscodeService = hscodeService;
             }
@@ -48,7 +49,7 @@ namespace Autumn.UI.Pages.Admin.Codes
                     return Page();
                 }
 
-            _hscodeService.Update(Row.Id, Row);
+            _hscodeService.UpdateAsync(Row.Id, Row);
 
 
                 return RedirectToPage("./Index");
@@ -56,7 +57,7 @@ namespace Autumn.UI.Pages.Admin.Codes
 
             private bool ProductExists(string id)
             {
-                if (_hscodeService.Get(id) != null)
+                if (_hscodeService.GetAsync(id) != null)
                     return true;
                 else return false;
 

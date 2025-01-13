@@ -9,15 +9,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Autumn.Service.Interface;
 
 namespace Autumn.UI.Pages.Admin.Products
 {
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly ProductService _productService;
+        private readonly IProductService _productService;
 
-        public CreateModel(ProductService productService)
+        public CreateModel(IProductService productService)
         {
             _productService = productService;
         }
@@ -49,7 +50,7 @@ namespace Autumn.UI.Pages.Admin.Products
             //var user = User.Identity.Name;
             Product.ModifiedBy = user.Name;
             Product.CreatedBy = user.Name;
-            _productService.Create(Product);
+            _productService.CreateAsync(Product);
 
             return RedirectToPage("./Index");
         }

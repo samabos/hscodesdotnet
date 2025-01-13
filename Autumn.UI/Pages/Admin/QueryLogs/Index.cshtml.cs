@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Autumn.UI.ViewModels;
 using System.Linq.Dynamic.Core;
+using Autumn.Service.Interface;
 
 namespace Autumn.UI.Pages.Admin.QueryLogs
 {
@@ -16,9 +17,9 @@ namespace Autumn.UI.Pages.Admin.QueryLogs
     public class IndexModel : PageModel
     {
 
-        private readonly SearchLogService _slService;
+        private readonly ISearchLogService _slService;
 
-        public IndexModel(SearchLogService slService)
+        public IndexModel(ISearchLogService slService)
         {
             _slService = slService;
         }

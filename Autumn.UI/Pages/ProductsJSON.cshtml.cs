@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autumn.Domain.Models;
 using Autumn.Domain.Services;
+using Autumn.Service.Interface;
 using Autumn.UI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,17 +13,17 @@ namespace Autumn.UI.Pages
 {
     public class ProductsJSONModel : PageModel
     {
-        private readonly ProductService _productService;
-        public ProductsJSONModel(ProductService productService)
+        private readonly IProductService _productService;
+        public ProductsJSONModel(IProductService productService)
         {
             _productService = productService;
         }
 
-        public JsonResult OnGet()
+        public async Task<JsonResult> OnGet()
         {
-            return new JsonResult(_productService.Get().Select(x=>x.Keyword));
+            var products = await _productService.GetAsync();
+            return new JsonResult(products.Select(x=>x.Keyword));
         }
 
-      
     }
 }

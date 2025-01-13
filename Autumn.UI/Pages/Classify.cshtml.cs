@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿
 using AutoMapper;
-using Autumn.BL.Interface.V3;
 using Autumn.BL.Models.Request.V3;
+using Autumn.Service.Interface;
 using Autumn.UI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.Extensions.Configuration;
 
 namespace Autumn.UI.Pages
 {
