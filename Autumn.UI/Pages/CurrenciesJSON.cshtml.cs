@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autumn.Domain.Services;
+﻿
+using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -10,15 +7,15 @@ namespace Autumn.UI.Pages
 {
     public class CurrenciesJSONModel : PageModel
     {
-        private readonly CurrencyService _currencyService;
-        public CurrenciesJSONModel(CurrencyService currencyService)
+        private readonly ICurrencyService _currencyService;
+        public CurrenciesJSONModel(ICurrencyService currencyService)
         {
             _currencyService = currencyService;
         }
 
-        public JsonResult OnGet()
+        public async Task<JsonResult> OnGet()
         {
-            return new JsonResult(_currencyService.Get());
+            return new JsonResult(await _currencyService.GetAsync());
         }
     }
 }

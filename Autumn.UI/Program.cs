@@ -2,12 +2,9 @@ using System.Net;
 using Autumn.Domain.Data;
 using Autumn.Domain.Infra;
 using Autumn.Domain.Models;
-using Autumn.Domain.Services;
-using Autumn.Domain.Validators;
-using Autumn.Repository;
+using Autumn.Infrastructure;
 using Autumn.Service;
 using Autumn.Service.Interface;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -50,22 +47,7 @@ builder.Services.AddSingleton<IStoreDatabaseSettings>(sp =>
 builder.Services.AddRepositoryServices();
 builder.Services.AddBusinessServices();
 
-// Add scoped services and validators
-//builder.Services.AddSingleton<HSCodeService>();
-//builder.Services.AddSingleton<Autumn.Domain.Services.ProductService>().AddTransient<IValidator<Product>, ProductValidator>();
-//builder.Services.AddSingleton<CustomsTariffService>().AddTransient<IValidator<CustomsTariff>, CustomsTariffValidator>();
-
-builder.Services.AddSingleton<ProductService2>();
-builder.Services.AddSingleton<KeywordService>();
-//builder.Services.AddSingleton<SearchLogService>();
-builder.Services.AddSingleton<DocumentService>();
-builder.Services.AddSingleton<HSCodeToDocumentService>();
-builder.Services.AddSingleton<CurrencyService>();
-//builder.Services.AddSingleton<CustomsTariffService>().AddTransient<IValidator<CustomsTariff>, CustomsTariffValidator>();
-builder.Services.AddSingleton<RequirementService>();
-//services.AddSingleton<IdentityService>();
 builder.Services.AddSingleton<IExRate, ExRate>();
-builder.Services.AddSingleton<IPredict, Predict>();
 builder.Services.AddSingleton<ITokenizer, Tokenizer>();
 builder.Services.AddScoped<IClassification, Classification>();
 

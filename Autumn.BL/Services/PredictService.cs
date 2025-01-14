@@ -1,12 +1,11 @@
-﻿using Autumn_UIML.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 
-namespace Autumn.Domain.Infra
+using Autumn.Service.Interface;
+using Autumn_UIML.Model;
+
+namespace Autumn.Service
 {
-    public class Predict:IPredict
+    public class PredictService : IPredictService
     {
         public ModelOutput GetHSCode(string product)
         {
@@ -19,10 +18,5 @@ namespace Autumn.Domain.Infra
 
             return predictionResult;
         }
-    }
-
-    public interface IPredict
-    {
-        ModelOutput GetHSCode(string product);
     }
 }

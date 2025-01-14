@@ -1,6 +1,6 @@
 ﻿using Autumn.Domain.Models;
 
-namespace Autumn.Repository.Interface
+namespace Autumn.Infrastructure.Interface
 {
     public interface IHsCodeRepository : IBaseRepository<HSCode>
     {

@@ -2,7 +2,7 @@
 
 namespace Autumn.Infrastructure.Interface
 {
-    public interface ISearchLogRepository : IBaseRepository<SearchLog>
+    public interface IKeywordRepository : IBaseRepository<Keyword>
     {
     }
 }

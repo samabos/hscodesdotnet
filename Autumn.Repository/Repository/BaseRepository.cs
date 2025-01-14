@@ -2,7 +2,7 @@
 using Autumn.Domain.Models;
 using MongoDB.Driver;
 
-namespace Autumn.Repository
+namespace Autumn.Infrastructure.Repository
 {
     public abstract class BaseRepository<T> where T : class
     {
