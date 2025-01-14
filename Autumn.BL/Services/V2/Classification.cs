@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autumn.BL.Interface.V2;
-using Autumn.BL.Models.Request.V2;
-using Autumn.BL.Models.Response.V2;
-using Autumn.Domain.Infra;
-using Autumn.Domain.Models;
-using Autumn.Domain.Services;
-using Autumn_UIML.Model;
-using Microsoft.Extensions.Configuration;
+﻿
 
 namespace Autumn.BL.Services.V2 { 
 

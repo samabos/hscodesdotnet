@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autumn.Domain.Models;
-using Autumn.Domain.Services;
+﻿using Autumn.Domain.Models;
 using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autumn.API", "Autumn.API\Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autumn.UI", "Autumn.UI\Autumn.UI.csproj", "{7D7D785C-EF7B-4E62-B961-BD72B9C9032E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autumn.Repository", "Autumn.Repository\Autumn.Repository.csproj", "{C4E8BAFD-E83C-4682-8D06-1F4F0C6AB8AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autumn.Infrastructure", "Autumn.Repository\Autumn.Infrastructure.csproj", "{C4E8BAFD-E83C-4682-8D06-1F4F0C6AB8AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autumn.Service", "Autumn.BL\Autumn.Service.csproj", "{87D23D9D-D7B3-4C8A-A857-F5F2B27038B7}"
 EndProject

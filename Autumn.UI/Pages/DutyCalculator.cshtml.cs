@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Autumn.Domain.Infra;
-using Autumn.Domain.Services;
 using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,10 +10,10 @@ namespace Autumn.UI.Pages
     public class DutyCalculatorModel : PageModel
     {
         private IExRate _exRate;
-        private readonly CurrencyService _curencyService;
+        private readonly ICurrencyService _curencyService;
         private readonly ICustomsTariffService _tariffService;
 
-        public DutyCalculatorModel(IExRate exRate, CurrencyService curencyService, ICustomsTariffService tariffService) {
+        public DutyCalculatorModel(IExRate exRate, ICurrencyService curencyService, ICustomsTariffService tariffService) {
             _exRate = exRate;
             _curencyService = curencyService;
             _tariffService = tariffService;
@@ -73,19 +72,20 @@ namespace Autumn.UI.Pages
 
         public async Task OnGetAsync()
         {
-            GetCurrencies = _curencyService.Get().Select(x=> new SelectListItem {Text=x.CurrencyCode,Value=x.CurrencyCode}).ToList();
+            var currencies = await _curencyService.GetAsync();
+            GetCurrencies = currencies.Select(x=> new SelectListItem {Text=x.CurrencyCode,Value=x.CurrencyCode}).ToList();
         }
         public async Task<IActionResult> OnPost()
         {
-
-            GetCurrencies = _curencyService.Get().Select(x => new SelectListItem { Text = x.CurrencyCode, Value = x.CurrencyCode }).ToList();
+            var currencies = await _curencyService.GetAsync();
+            GetCurrencies = currencies.Select(x => new SelectListItem { Text = x.CurrencyCode, Value = x.CurrencyCode }).ToList();
             if (ModelState.IsValid)
             {
                 try
                 {
                     //Get HS Code Tariff 
                     var tariff = await _tariffService.GetByHSCodeAsync(HSCode);
-                    var currency = _curencyService.GetByCurrency(Currency);
+                    var currency = await _curencyService.GetByCurrencyAsync(Currency);
                     var cif = Cost + Insurance + Freight;
                     var cf = Cost + Freight;
                     ExRate = Convert.ToDecimal(currency.Rate);

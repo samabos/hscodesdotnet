@@ -17,6 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Autumn.Domain\Autumn.Domain.csproj" />
-    <ProjectReference Include="..\Autumn.Repository\Autumn.Repository.csproj" />
+    <ProjectReference Include="..\Autumn.Repository\Autumn.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

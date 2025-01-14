@@ -1,7 +1,7 @@
 ﻿using Autumn.Domain.Models;
-using Autumn.Repository.Interface;
+using Autumn.Infrastructure.Interface;
 
-namespace Autumn.Repository
+namespace Autumn.Infrastructure.Repository
 {
     public class SearchLogRepository : BaseRepository<SearchLog>, ISearchLogRepository
     {

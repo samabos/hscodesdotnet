@@ -1,5 +1,5 @@
 ﻿
-namespace Autumn.Repository.Interface
+namespace Autumn.Infrastructure.Interface
 {
     public interface IBaseRepository<T>
     {

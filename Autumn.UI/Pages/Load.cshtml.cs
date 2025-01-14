@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Autumn.Domain.Services;
 using Autumn.Domain.Models;
 using Autumn.Domain.Infra;
 using Autumn.Service.Interface;
@@ -12,23 +11,21 @@ namespace Autumn.UI.Pages
 
         private readonly IHsCodeService _hscodeService;
         private readonly IProductService _productService;
-        private readonly ProductService2 _productService2;
-        private readonly DocumentService _documentService;
-        private readonly HSCodeToDocumentService _hscodeToDocumentService;
-        private readonly CurrencyService _curencyService;
+        private readonly IDocumentService _documentService;
+        private readonly IHsCodeDocumentService _hscodeToDocumentService;
+        private readonly ICurrencyService _curencyService;
         private readonly IExRate _exRate;
         private readonly ITokenizer _tokenizer;
 
         public LoadModel(Autumn.Domain.Data.classificationContext context, IHsCodeService hscodeService,
-            IProductService productService, ProductService2 productService2, DocumentService documentService,
-            HSCodeToDocumentService hscodeToDocumentService, CurrencyService curencyService,
+            IProductService productService, IDocumentService documentService,
+            IHsCodeDocumentService hscodeToDocumentService, ICurrencyService curencyService,
             IExRate exRate,
             ITokenizer tokenizer)
         {
             _context = context;
             _hscodeService = hscodeService;
             _productService = productService;
-            _productService2 = productService2;
             _documentService = documentService;
             _hscodeToDocumentService = hscodeToDocumentService;
             _curencyService = curencyService;

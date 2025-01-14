@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Autumn.Domain.Models;
-using Autumn.Domain.Services;
 using Autumn.Service.Interface;
 using Autumn.UI.Contract.V1.Responses;
 using Autumn_UIML.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
 
 namespace Autumn.UI.Pages
 {

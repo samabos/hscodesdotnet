@@ -11,6 +11,12 @@ namespace Autumn.Service
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ISearchLogService, SearchLogService>();
             services.AddScoped<ICustomsTariffService, CustomsTariffService>();
+            services.AddScoped<ICurrencyService, CurrencyService>();
+            services.AddScoped<IDocumentService, DocumentService>();
+            services.AddScoped<IHsCodeDocumentService, HsCodeDocumentService>();
+            services.AddScoped<IRequirementService, RequirementService>();
+
+            services.AddScoped<IPredictService, PredictService>();
         }
     }
 }

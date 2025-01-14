@@ -1,8 +1,8 @@
 ﻿using Autumn.Domain.Models;
-using Autumn.Repository.Interface;
+using Autumn.Infrastructure.Interface;
 using MongoDB.Driver;
 
-namespace Autumn.Repository
+namespace Autumn.Infrastructure.Repository
 {
     public class HsCodeRepository : BaseRepository<HSCode>, IHsCodeRepository
     {
