@@ -1,10 +1,7 @@
 ﻿using Autumn.Domain.Models;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Autumn.Domain.Validators
+namespace Autumn.Service.Validators
 {
     public class HSCodeValidator : AbstractValidator<HSCode>
     {
