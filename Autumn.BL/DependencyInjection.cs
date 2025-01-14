@@ -17,6 +17,7 @@ namespace Autumn.Service
             services.AddScoped<IRequirementService, RequirementService>();
 
             services.AddScoped<IPredictService, PredictService>();
+            services.AddScoped<IClassification, Classification>();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Autumn.Domain.Infra;
 using Autumn.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,12 +8,12 @@ namespace Autumn.UI.Pages
 {
     public class DutyCalculatorModel : PageModel
     {
-        private IExRate _exRate;
+        //private IExRate _exRate;
         private readonly ICurrencyService _curencyService;
         private readonly ICustomsTariffService _tariffService;
 
-        public DutyCalculatorModel(IExRate exRate, ICurrencyService curencyService, ICustomsTariffService tariffService) {
-            _exRate = exRate;
+        public DutyCalculatorModel(ICurrencyService curencyService, ICustomsTariffService tariffService) {
+           
             _curencyService = curencyService;
             _tariffService = tariffService;
         }

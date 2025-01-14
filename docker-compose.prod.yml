@@ -26,6 +26,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - StoreDatabaseSettings__ConnectionString=${CONNECTION_STRING}
+      - Auth0__Domain=${AUTH0_DOMAIN}
+      - Auth0__ClientId=${AUTH0_CLIENTID}
     networks:
       - autumn-ui-network
 

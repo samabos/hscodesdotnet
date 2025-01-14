@@ -1,58 +1,50 @@
-using System.Net;
-using Autumn.Domain.Data;
-using Autumn.Domain.Infra;
-using Autumn.Domain.Models;
+using Auth0.AspNetCore.Authentication;
 using Autumn.Infrastructure;
 using Autumn.Service;
-using Autumn.Service.Interface;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var environment = builder.Environment;
 
 // Add services to the container
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("default", policy =>
-    {
-        policy.WithOrigins("http://34.69.79.114:8003/")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("default", policy =>
+//    {
+//        policy.WithOrigins("http://34.69.79.114:8003/")
+//              .AllowAnyHeader()
+//              .AllowAnyMethod();
+//    });
+//});
 
-builder.Services.Configure<ForwardedHeadersOptions>(options =>
-{
-    options.KnownProxies.Add(IPAddress.Parse("10.128.0.5"));
-    options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
-    options.KnownProxies.Add(IPAddress.Parse("162.241.137.245"));
-    options.KnownProxies.Add(IPAddress.Parse("34.69.79.114"));
-    options.AllowedHosts.Add("http://34.69.79.114:8003");
-});
+//builder.Services.Configure<ForwardedHeadersOptions>(options =>
+//{
+//    options.KnownProxies.Add(IPAddress.Parse("10.128.0.5"));
+//    options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
+//    options.KnownProxies.Add(IPAddress.Parse("162.241.137.245"));
+//    options.KnownProxies.Add(IPAddress.Parse("34.69.79.114"));
+//    options.AllowedHosts.Add("http://34.69.79.114:8003");
+//});
 
-// Database setup
-builder.Services.AddDbContext<classificationContext>(options =>
-    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddRelationalDatabaseServices(configuration);
+builder.Services.AddDocumentDatabaseServices(configuration);
 
-builder.Services.Configure<StoreDatabaseSettings>(
-configuration.GetSection(nameof(StoreDatabaseSettings)));
-
-builder.Services.AddSingleton<IStoreDatabaseSettings>(sp =>
-    sp.GetRequiredService<IOptions<StoreDatabaseSettings>>().Value);
 
 builder.Services.AddRepositoryServices();
 builder.Services.AddBusinessServices();
 
-builder.Services.AddSingleton<IExRate, ExRate>();
-builder.Services.AddSingleton<ITokenizer, Tokenizer>();
-builder.Services.AddScoped<IClassification, Classification>();
 
 // AutoMapper configuration
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+// Add Auth0 Authentication
+builder.Services.AddAuth0WebAppAuthentication(options =>
+{
+    options.Domain = configuration["Auth0:Domain"];
+    options.ClientId = configuration["Auth0:ClientId"];
+});
 
 //// JWT Authentication setup
 //var jwtSettings = new JwtSettings();
@@ -78,7 +70,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //    options.GetClaimsFromUserInfoEndpoint = true;
 //    options.Scope.Add("autumnapi");
 //});
-
+//builder.Services.AddControllersWithViews();
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add(new IgnoreAntiforgeryTokenAttribute());
@@ -103,7 +95,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseCors("default");
+//app.UseCors("default");
 app.UseAuthentication();
 app.UseAuthorization();
 

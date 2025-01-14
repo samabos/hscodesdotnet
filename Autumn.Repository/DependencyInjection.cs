@@ -1,6 +1,11 @@
-﻿using Autumn.Infrastructure.Interface;
+﻿using Autumn.Domain.Data;
+using Autumn.Domain.Models;
+using Autumn.Infrastructure.Interface;
 using Autumn.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Autumn.Infrastructure
 {
@@ -18,6 +23,25 @@ namespace Autumn.Infrastructure
             services.AddScoped<IDocumentRepository,DocumentRepository>();
             services.AddScoped<IKeywordRepository, KeywordRepository>();
 
+        }
+
+        public static IServiceCollection AddRelationalDatabaseServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<classificationContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            return services;
+        }
+
+        public static IServiceCollection AddDocumentDatabaseServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<StoreDatabaseSettings>(
+                configuration.GetSection(nameof(StoreDatabaseSettings)));
+
+            services.AddSingleton<IStoreDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<StoreDatabaseSettings>>().Value);
+
+            return services;
         }
     }
 }
