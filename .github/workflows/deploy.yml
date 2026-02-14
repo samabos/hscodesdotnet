@@ -75,15 +75,15 @@ jobs:
             export GROQAPIKEY='${{ secrets.GROQAPIKEY }}' &&
             export CONNECTION_STRING='${{ secrets.PROD_CONNECTION_STRING }}' &&
             export GITHUB_RUN_NUMBER=$RUN_NUMBER &&
-            docker compose -f ./docker compose.prod.yml down &&
-            docker compose -f ./docker compose.prod.yml up -d --build;
+            docker compose -f ./docker-compose.prod.yml down &&
+            docker compose -f ./docker-compose.prod.yml up -d --build;
           else
             export AUTH0_DOMAIN='${{ secrets.AUTH0_DOMAIN }}' &&
             export AUTH0_AUDIENCE='${{ secrets.AUTH0_AUDIENCE }}' &&
             export GROQAPIKEY='${{ secrets.GROQAPIKEY }}' &&
             export CONNECTION_STRING='${{ secrets.STAGING_CONNECTION_STRING }}' &&
             export GITHUB_RUN_NUMBER=$RUN_NUMBER &&
-            docker compose -f ./docker compose.staging.yml up -d --build;
+            docker compose -f ./docker-compose.staging.yml up -d --build;
           fi
           "
 
