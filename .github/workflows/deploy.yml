@@ -29,7 +29,7 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64 \
             -t ${{ secrets.DOCKER_USERNAME }}/hscodes:${{ github.run_number }} \
-            --file Autumn.UI/Dockerfile \
+            --file Dockerfile \
             --push .
 
       - name: Set up SSH agent
@@ -44,44 +44,46 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "push" ]; then
             ENVIRONMENT="production"
-            BRANCH="main"  # Deploy from the main branch for production
+            BRANCH="main"
+            DEPLOY_DIR="/root/hscodes"
+            COMPOSE_FILE="docker-compose.prod.yml"
+            CONNECTION_STRING="${{ secrets.PROD_CONNECTION_STRING }}"
           else
             ENVIRONMENT="staging"
-            BRANCH="${{ github.head_ref }}"  # Deploy from the PR branch for staging
+            BRANCH="${{ github.head_ref }}"
+            DEPLOY_DIR="/root/hscodes-staging"
+            COMPOSE_FILE="docker-compose.staging.yml"
+            CONNECTION_STRING="${{ secrets.STAGING_CONNECTION_STRING }}"
           fi
 
-          RUN_NUMBER=${{ github.run_number }}  # Get the GitHub Run Number
+          RUN_NUMBER=${{ github.run_number }}
           echo "Deploying to $ENVIRONMENT environment..."
 
-          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
-          if [ '$ENVIRONMENT' == 'production' ]; then
-            mkdir -p /root/hscodes &&
-            cd /root/hscodes;
-          else
-            mkdir -p /root/hscodes-staging &&
-            cd /root/hscodes-staging;
-          fi &&
-          if [ ! -d .git ]; then
-            echo 'Directory is not a git repository. Cloning...';
-            git clone https://github.com/samabos/hscodesdotnet.git .;
-          fi;
-            git reset --hard HEAD &&
-            git fetch origin $BRANCH &&
-            git checkout $BRANCH &&
-            git pull origin $BRANCH &&
-          if [ '$ENVIRONMENT' == 'production' ]; then
-            export AUTH0_DOMAIN='${{ secrets.AUTH0_DOMAIN }}' &&
-            export AUTH0_CLIENTID='${{ secrets.AUTH0_CLIENTID }}' &&
-            export CONNECTION_STRING='${{ secrets.PROD_CONNECTION_STRING }}' &&
-            export GITHUB_RUN_NUMBER=$RUN_NUMBER &&
-            docker-compose -f ./docker-compose.prod.yml down &&
-            docker-compose -f ./docker-compose.prod.yml up -d --build;
-          else
-            export AUTH0_DOMAIN='${{ secrets.AUTH0_DOMAIN }}' &&
-            export AUTH0_CLIENTID='${{ secrets.AUTH0_CLIENTID }}' &&
-            export CONNECTION_STRING='${{ secrets.STAGING_CONNECTION_STRING }}' &&
-            export GITHUB_RUN_NUMBER=$RUN_NUMBER &&
-            docker-compose -f ./docker-compose.staging.yml up -d --build;
-          fi
-          "
+          # Write .env file locally and upload to VPS
+          cat > /tmp/deploy.env << EOF
+          AUTH0_DOMAIN=${{ secrets.AUTH0_DOMAIN }}
+          AUTH0_AUDIENCE=${{ secrets.AUTH0_AUDIENCE }}
+          GROQAPIKEY=${{ secrets.GROQAPIKEY }}
+          CONNECTION_STRING=${CONNECTION_STRING}
+          GITHUB_RUN_NUMBER=${RUN_NUMBER}
+          EOF
+          # Remove leading whitespace from heredoc
+          sed -i 's/^[[:space:]]*//' /tmp/deploy.env
 
+          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "mkdir -p ${DEPLOY_DIR}"
+          scp /tmp/deploy.env ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${DEPLOY_DIR}/.env
+
+          # Deploy on VPS
+          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
+            cd ${DEPLOY_DIR} &&
+            if [ ! -d .git ]; then
+              echo 'Cloning repository...' &&
+              git clone https://github.com/samabos/hscodesdotnet.git .;
+            fi &&
+            git reset --hard HEAD &&
+            git fetch origin ${BRANCH} &&
+            git checkout ${BRANCH} &&
+            git pull origin ${BRANCH} &&
+            docker compose -f ./${COMPOSE_FILE} down &&
+            docker compose -f ./${COMPOSE_FILE} up -d
+          "

@@ -8,5 +8,6 @@ namespace Autumn.Service.Interface
     {
         Task<List<HSCode>> GetWithHSCodeOptionsAsync(string code, string pcode, string level);
         Task<List<HSCode>> GetWithOptionsAsync(string id, string pid, string level);
+        Task<List<HSCode>> SearchByDescriptionAsync(string keyword, int limit = 20);
     }
 }

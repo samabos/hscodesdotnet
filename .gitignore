@@ -398,3 +398,14 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# App settings with secrets
+**/appsettings.json
+**/appsettings.Development.json
+
+# Claude Code
+.claude/
+
+# Temp files
+nul
+hs-codes-redesign.jsx

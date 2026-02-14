@@ -18,5 +18,10 @@ namespace Autumn.Service
             await _repository.GetByHSCodeAsync(hscode);
         public async Task<List<CustomsTariff>> GetByHeaderAsync(string header) =>
             await _repository.GetByHeaderAsync(header);
+
+        public async Task<CustomsTariff> GetByHSCodeAndCountryAsync(string hscode, string country) =>
+            await _repository.GetByHSCodeAndCountryAsync(hscode, country);
+        public async Task<List<CustomsTariff>> GetByHeaderAndCountryAsync(string header, string country) =>
+            await _repository.GetByHeaderAndCountryAsync(header, country);
     }
 }

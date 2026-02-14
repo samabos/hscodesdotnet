@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   nginx:
     image: nginx:latest
@@ -17,13 +15,19 @@ services:
       - autumn-ui-network
 
   web:
-    image: "sageprojects/hscodes:1.09" # Replace with your actual DockerHub image name
+    build: .
     container_name: autumn-ui-web
     restart: always
     expose:
-      - "8080"  # Expose app port to the NGINX service
+      - "8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - StoreDatabaseSettings__ConnectionString=${CONNECTION_STRING}
+      - Auth0__Domain=${AUTH0_DOMAIN}
+      - Auth0__Audience=${AUTH0_AUDIENCE}
+      - SiteSettings__GroqApiKey=${GROQAPIKEY}
+      - SiteSettings__GroqModel=llama-3.1-8b-instant
+      - SiteSettings__Threshold=0.1
     networks:
       - autumn-ui-network
 

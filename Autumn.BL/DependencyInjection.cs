@@ -15,6 +15,7 @@ namespace Autumn.Service
             services.AddScoped<IDocumentService, DocumentService>();
             services.AddScoped<IHsCodeDocumentService, HsCodeDocumentService>();
             services.AddScoped<IRequirementService, RequirementService>();
+            services.AddScoped<ICountryService, CountryService>();
 
             services.AddScoped<IPredictService, PredictService>();
             services.AddScoped<IClassification, Classification>();

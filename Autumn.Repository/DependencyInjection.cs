@@ -22,6 +22,7 @@ namespace Autumn.Infrastructure
             services.AddScoped<IRequirementRepository, RequirementRepository>();
             services.AddScoped<IDocumentRepository,DocumentRepository>();
             services.AddScoped<IKeywordRepository, KeywordRepository>();
+            services.AddScoped<ICountryRepository, CountryRepository>();
 
         }
 

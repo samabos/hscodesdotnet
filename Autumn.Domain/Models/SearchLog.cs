@@ -13,6 +13,8 @@ namespace Autumn.Domain.Models
         public string Prediction { get; set; }
         public double Rating { get; set; }
         public double Threshold { get; set; }
+        public string Source { get; set; }
+        public bool FoundInDb { get; set; }
         public DateTime Created { get; set; }
 
     }

@@ -24,5 +24,8 @@ namespace Autumn.Service
         public async Task<List<Product>> GetLikeKeywordAsync(string keyword) =>
             await _productRepository.GetLikeKeywordAsync(keyword);
 
+        public async Task<List<Product>> SearchByKeywordAsync(string keyword, int limit = 20) =>
+            await _productRepository.SearchByKeywordAsync(keyword, limit);
+
     }
 }
