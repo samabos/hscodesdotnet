@@ -18,16 +18,19 @@ services:
       - autumn-ui-network
 
   web:
-    image: "sageprojects/hscodes:${GITHUB_RUN_NUMBER}" # Replace with your actual DockerHub image name
+    image: "sageprojects/hscodes:${GITHUB_RUN_NUMBER}"
     container_name: autumn-ui-web
     restart: always
     expose:
-      - "8080"  # Expose app port to the NGINX service
+      - "8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - StoreDatabaseSettings__ConnectionString=${CONNECTION_STRING}
       - Auth0__Domain=${AUTH0_DOMAIN}
-      - Auth0__ClientId=${AUTH0_CLIENTID}
+      - Auth0__Audience=${AUTH0_AUDIENCE}
+      - SiteSettings__GroqApiKey=${GROQAPIKEY}
+      - SiteSettings__GroqModel=llama-3.1-8b-instant
+      - SiteSettings__Threshold=0.1
     networks:
       - autumn-ui-network
 

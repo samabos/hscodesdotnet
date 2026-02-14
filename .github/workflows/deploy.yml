@@ -29,7 +29,7 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64 \
             -t ${{ secrets.DOCKER_USERNAME }}/hscodes:${{ github.run_number }} \
-            --file Autumn.UI/Dockerfile \
+            --file Dockerfile \
             --push .
 
       - name: Set up SSH agent
@@ -71,14 +71,16 @@ jobs:
             git pull origin $BRANCH &&
           if [ '$ENVIRONMENT' == 'production' ]; then
             export AUTH0_DOMAIN='${{ secrets.AUTH0_DOMAIN }}' &&
-            export AUTH0_CLIENTID='${{ secrets.AUTH0_CLIENTID }}' &&
+            export AUTH0_AUDIENCE='${{ secrets.AUTH0_AUDIENCE }}' &&
+            export GROQAPIKEY='${{ secrets.GROQAPIKEY }}' &&
             export CONNECTION_STRING='${{ secrets.PROD_CONNECTION_STRING }}' &&
             export GITHUB_RUN_NUMBER=$RUN_NUMBER &&
             docker-compose -f ./docker-compose.prod.yml down &&
             docker-compose -f ./docker-compose.prod.yml up -d --build;
           else
             export AUTH0_DOMAIN='${{ secrets.AUTH0_DOMAIN }}' &&
-            export AUTH0_CLIENTID='${{ secrets.AUTH0_CLIENTID }}' &&
+            export AUTH0_AUDIENCE='${{ secrets.AUTH0_AUDIENCE }}' &&
+            export GROQAPIKEY='${{ secrets.GROQAPIKEY }}' &&
             export CONNECTION_STRING='${{ secrets.STAGING_CONNECTION_STRING }}' &&
             export GITHUB_RUN_NUMBER=$RUN_NUMBER &&
             docker-compose -f ./docker-compose.staging.yml up -d --build;

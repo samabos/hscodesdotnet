@@ -116,6 +116,7 @@ app.UseCors("AllowSPA");
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseStaticFiles();
 
 // ── Map endpoints ───────────────────────────────────────────────
 app.MapSearchEndpoints();
@@ -124,5 +125,11 @@ app.MapDutyEndpoints();
 app.MapNoteEndpoints();
 app.MapCodeListEndpoints();
 app.MapAdminEndpoints();
+
+// ── SPA fallback (serves index.html for client-side routes) ─────
+if (!app.Environment.IsDevelopment())
+{
+    app.MapFallbackToFile("index.html");
+}
 
 app.Run();
