@@ -64,33 +64,33 @@
   --theme-warning-dim: rgba(217,119,6,0.08);
 }
 
-/* ===== DARK MODE ===== */
+/* ===== DARK MODE (emerald) ===== */
 .dark {
-  --theme-bg: #0A0A0A;
-  --theme-surface: #111111;
-  --theme-surface2: #181818;
-  --theme-surface3: #1F1F1F;
-  --theme-border: #262626;
-  --theme-border-hover: #333333;
-  --theme-text: #E8E6E1;
-  --theme-text-sec: #9CA3AF;
-  --theme-text-dim: #6B7280;
-  --theme-accent: #C9A84C;
-  --theme-accent-hover: #DBBD64;
-  --theme-accent-dim: rgba(201,168,76,0.10);
-  --theme-accent-border: rgba(201,168,76,0.25);
-  --theme-success: #4EA87A;
-  --theme-success-dim: rgba(78,168,122,0.12);
-  --theme-info: #5B8DD9;
-  --theme-info-dim: rgba(91,141,217,0.12);
-  --theme-input-bg: #131313;
-  --theme-header-bg: rgba(10,10,10,0.88);
-  --theme-grad: linear-gradient(135deg,#C9A84C,#A08535);
-  --theme-danger: #E05A4E;
-  --theme-btn-text: #0A0A0A;
-  --theme-logo-glow: rgba(201,168,76,0.20);
-  --theme-warning: #E09840;
-  --theme-warning-dim: rgba(224,152,64,0.12);
+  --theme-bg: #0B0F0D;
+  --theme-surface: #111916;
+  --theme-surface2: #162019;
+  --theme-surface3: #1E2D24;
+  --theme-border: #243530;
+  --theme-border-hover: #3A5548;
+  --theme-text: #E2E8E5;
+  --theme-text-sec: #8A9690;
+  --theme-text-dim: #546B5F;
+  --theme-accent: #10B981;
+  --theme-accent-hover: #34D399;
+  --theme-accent-dim: rgba(16,185,129,0.08);
+  --theme-accent-border: rgba(16,185,129,0.22);
+  --theme-success: #4A9E6E;
+  --theme-success-dim: rgba(74,158,110,0.10);
+  --theme-info: #5A8DC8;
+  --theme-info-dim: rgba(90,141,200,0.10);
+  --theme-input-bg: #141C17;
+  --theme-header-bg: rgba(11,15,13,0.88);
+  --theme-grad: linear-gradient(135deg,#10B981,#059669);
+  --theme-danger: #E05545;
+  --theme-btn-text: #0B0F0D;
+  --theme-logo-glow: rgba(16,185,129,0.20);
+  --theme-warning: #E09838;
+  --theme-warning-dim: rgba(224,152,56,0.10);
 }
 
 /* ===== KEYFRAMES ===== */
