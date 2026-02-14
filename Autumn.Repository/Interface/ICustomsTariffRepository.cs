@@ -6,5 +6,7 @@ namespace Autumn.Infrastructure.Interface
     {
         Task<List<CustomsTariff>> GetByHeaderAsync(string header);
         Task<CustomsTariff> GetByHSCodeAsync(string hscode);
+        Task<CustomsTariff> GetByHSCodeAndCountryAsync(string hscode, string country);
+        Task<List<CustomsTariff>> GetByHeaderAndCountryAsync(string header, string country);
     }
 }

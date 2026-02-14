@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace Autumn.Domain.Models
 {
+    [BsonIgnoreExtraElements]
     public partial class Document
     {
 

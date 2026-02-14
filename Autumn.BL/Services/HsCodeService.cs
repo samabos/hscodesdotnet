@@ -19,5 +19,8 @@ namespace Autumn.Service
         public async Task<List<HSCode>> GetWithHSCodeOptionsAsync(string code, string parentCode, string level) =>
             await _hsCodeRepository.GetWithHSCodeOptionsAsync(code, parentCode, level);
 
+        public async Task<List<HSCode>> SearchByDescriptionAsync(string keyword, int limit = 20) =>
+            await _hsCodeRepository.SearchByDescriptionAsync(keyword, limit);
+
     }
 }

@@ -15,6 +15,7 @@ namespace Autumn.Domain.Models
         public string CustomsTariffStoreCollectionName { get; set; }
         public string HSCodeToDocumentStoreCollectionName { get; set; }
         public string RequirementStoreCollectionName { get; set; }
+        public string CountryStoreCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
@@ -32,6 +33,7 @@ namespace Autumn.Domain.Models
         string CustomsTariffStoreCollectionName { get; set; }
         string HSCodeToDocumentStoreCollectionName { get; set; }
         string RequirementStoreCollectionName { get; set; }
+        string CountryStoreCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }
