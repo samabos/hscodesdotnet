@@ -51,7 +51,10 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = configuration["Auth0:Domain"];
+        var domain = configuration["Auth0:Domain"] ?? "";
+        if (!domain.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            domain = $"https://{domain}";
+        options.Authority = domain;
         options.Audience = configuration["Auth0:Audience"];
     });
 
