@@ -1,5 +1,10 @@
 const BASE = '/api';
 
+let _token = null;
+export const setAuthToken = (token) => { _token = token; };
+
+const headers = () => _token ? { Authorization: `Bearer ${_token}` } : {};
+
 const json = async (r) => {
   if (r.status === 429) {
     window.dispatchEvent(new CustomEvent('api:ratelimit'));
@@ -10,7 +15,7 @@ const json = async (r) => {
 
 export const api = {
   search: (keyword) =>
-    fetch(`${BASE}/search?keyword=${encodeURIComponent(keyword)}`).then(json),
+    fetch(`${BASE}/search?keyword=${encodeURIComponent(keyword)}`, { headers: headers() }).then(json),
 
   browse: ({ code, parentCode, parentId, level } = {}) => {
     const params = new URLSearchParams();
@@ -18,7 +23,7 @@ export const api = {
     if (parentCode) params.set('parentCode', parentCode);
     if (parentId) params.set('parentId', parentId);
     if (level != null) params.set('level', String(level));
-    return fetch(`${BASE}/browse?${params}`).then(json);
+    return fetch(`${BASE}/browse?${params}`, { headers: headers() }).then(json);
   },
 
   duty: ({ HSCode, Country, ProductDesc, Cost, Freight, Insurance, Currency }) =>
@@ -26,17 +31,17 @@ export const api = {
       HSCode, Country, ProductDesc: ProductDesc || '',
       Cost: String(Cost), Freight: String(Freight),
       Insurance: String(Insurance), Currency: Currency || 'USD'
-    })}`).then(json),
+    })}`, { headers: headers() }).then(json),
 
   note: (hscode, country) =>
-    fetch(`${BASE}/note/${encodeURIComponent(hscode)}?country=${encodeURIComponent(country)}`).then(json),
+    fetch(`${BASE}/note/${encodeURIComponent(hscode)}?country=${encodeURIComponent(country)}`, { headers: headers() }).then(json),
 
   countries: () =>
-    fetch(`${BASE}/codelist/countries`).then(json),
+    fetch(`${BASE}/codelist/countries`, { headers: headers() }).then(json),
 
   currencies: () =>
-    fetch(`${BASE}/codelist/currency`).then(json),
+    fetch(`${BASE}/codelist/currency`, { headers: headers() }).then(json),
 
   products: (query) =>
-    fetch(`${BASE}/codelist/products/${encodeURIComponent(query || '')}`).then(json),
+    fetch(`${BASE}/codelist/products/${encodeURIComponent(query || '')}`, { headers: headers() }).then(json),
 };

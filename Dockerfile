@@ -1,5 +1,8 @@
 # Stage 1: Build React SPA
 FROM node:20-alpine AS spa-build
+ARG VITE_AUTH0_DOMAIN=""
+ARG VITE_AUTH0_CLIENT_ID=""
+ARG VITE_AUTH0_AUDIENCE=""
 WORKDIR /app
 COPY Autumn.SPA/package*.json ./
 RUN npm ci
