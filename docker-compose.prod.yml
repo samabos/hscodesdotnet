@@ -5,7 +5,7 @@ services:
     restart: always
     ports:
       - "80:80"  # Map HTTP traffic to NGINX
-      - "443:443"  # Optional: Map HTTPS traffic if using SSL
+      - "443:443" # Map HTTPS traffic if using SSLtest
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro  # Mount custom NGINX config
       - /etc/ssl/hs.codes:/etc/ssl/hs.codes:ro  # Mount SSL files from VPS
